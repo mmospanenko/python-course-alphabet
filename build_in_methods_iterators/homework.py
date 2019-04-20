@@ -64,12 +64,8 @@ def task_6_min_value_list_of_dicts(data: DT, key: str) -> ST:
     Returns:
 
     """
-    data = list(filter(lambda x: x.get(key), data))
-
-    filled = list(filter(lambda x: x.get(key) == min(
-        list(map(lambda keys_list: keys_list.get(key), data))), data))
-    if filled:
-        return filled[0]
+    not_empty_data = list(filter(lambda x: x.get(key), data))
+    return min(not_empty_data, key=lambda x: x.get(key))
 
 
 def task_7_max_value_list_of_lists(data: List[List[int]]) -> int:
