@@ -23,8 +23,8 @@ def task_1_add_new_record_to_db(con) -> None:
     cursor.execute(
         """
         INSERT INTO customers (customername, contactname, country, city, postalcode, address)
-        VALUES (%s, %s, %s, %s, %s, %s);
-        """, ('Thomas', 'David', 'Singapore', 'London', 774, 'Some Address')
+        VALUES (%s, %s, %s, %s, %s, %s);""",
+        ('Thomas', 'David', 'Singapore', 'London', 774, 'Some Address')
     )
 
 
