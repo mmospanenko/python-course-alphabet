@@ -48,16 +48,18 @@
 """
 from typing import Union, List
 from constants import CARS_TYPES, CARS_PRODUCER
+import uuid
+import random
 
 
 class Cesar:
 
-    def __init__(self, price, type_car, producer, number, mileage):
+    def __init__(self, price, type_car, producer):
         self.__price = price
         self.__type = type_car
         self.__producer = producer
-        self.number = number
-        self.mileage = mileage
+        self.number = uuid.uuid4()
+        self.mileage = float(f'{random.random() * 100:2f}')
 
     @property
     def price(self):
@@ -66,15 +68,34 @@ class Cesar:
 
     @property
     def type(self):
-        car = ''.join([x for x in CARS_TYPES if self.__type in x])
+        car = self.__type if self.__type in CARS_TYPES else None
         assert car, f'Select car in list {CARS_TYPES}'
         return car
 
     @property
     def producer(self):
-        producer = ''.join([x for x in CARS_PRODUCER if self.__producer in x])
+        producer = self.__producer if self.__producer in CARS_PRODUCER else None
         assert producer, f'Select producer in list {CARS_PRODUCER}'
         return producer
+
+    @property
+    def new_number(self):
+        self.number = uuid.uuid4()
+        return self.number
+
+    @property
+    def logs(self):
+        specification = dict(
+            price=self.price,
+            type=self.type,
+            producer=self.producer,
+            number=str(self.number),
+            mileage=self.mileage
+        )
+        return specification
+
+    def __str__(self):
+        return self.car()
 
 
 class Car:
@@ -87,5 +108,13 @@ class Garage:
 
 if __name__ == '__main__':
 
-    a = Cesar(price=213.32, type_car='Truck', producer='dsfds', number='num', mileage=123)
-    print(a.price, a.type, a.producer)
+    bmw = Cesar(price=35000.00, type_car='Truck', producer='BMW')
+    ford = Cesar(price=25000.145, type_car='Sedan', producer='FORD')
+    print(bmw.price, bmw.type, bmw.producer, bmw.number)
+    print(f'bmw number is {bmw.number}')
+    print(f'bmw number has been changed to the {bmw.new_number}')
+    print('set of the car')
+    print('___________')
+    for k, v in bmw.logs.items(): print(f'{k} {v}')
+    print('___________')
+    print(bmw.price > ford.price)
