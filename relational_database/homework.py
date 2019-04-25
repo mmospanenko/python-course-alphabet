@@ -19,13 +19,14 @@ def task_1_add_new_record_to_db(con) -> None:
     Returns: 92 records
 
     """
-    with con.cursor() as cursor:
-        cursor.execute(
+    with con.cursor() as cur:
+        cur.execute(
             """
             INSERT INTO customers (customername, contactname, country, city, postalcode, address)
             VALUES (%s, %s, %s, %s, %s, %s)""",
             ('Thomas', 'David', 'Singapore', 'London', 774, 'Some Address')
         )
+    con.commit()
 
 
 def task_2_list_all_customers(cur) -> list:
@@ -87,7 +88,7 @@ def task_4_update_customer(con):
                     LIMIT 1)
             """
         )
-        con.commit()
+    con.commit()
 
 
 def task_5_delete_the_last_customer(con) -> None:
