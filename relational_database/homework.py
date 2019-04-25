@@ -19,13 +19,13 @@ def task_1_add_new_record_to_db(con) -> None:
     Returns: 92 records
 
     """
-    cursor = con.cursor()
-    cursor.execute(
-        """
-        INSERT INTO customers (customername, contactname, country, city, postalcode, address)
-        VALUES (%s, %s, %s, %s, %s, %s);""",
-        ('Thomas', 'David', 'Singapore', 'London', 774, 'Some Address')
-    )
+    with con.cursor() as cursor:
+        cursor.execute(
+            """
+            INSERT INTO customers (customername, contactname, country, city, postalcode, address)
+            VALUES (%s, %s, %s, %s, %s, %s);""",
+            ('Thomas', 'David', 'Singapore', 'London', 774, 'Some Address')
+        )
 
 
 def task_2_list_all_customers(cur) -> list:
@@ -75,14 +75,14 @@ def task_4_update_customer(con):
     Returns: 91 records with updated customer
 
     """
-    cursor = con.cursor()
-    cursor.execute(
-        """
-        UPDATE customers
-        SET customername = 'Johnny Depp'
-        WHERE customerid = 1;
-        """
-    )
+    with con.cursor() as cursor:
+        cursor.execute(
+            """
+            UPDATE customers
+            SET customername = 'Johnny Depp'
+            WHERE customerid = 1;
+            """
+        )
 
 
 def task_5_delete_the_last_customer(con) -> None:
@@ -92,16 +92,16 @@ def task_5_delete_the_last_customer(con) -> None:
     Args:
         con: psycopg connection
     """
-    cursor = con.cursor()
-    cursor.execute(
-        """
-        DELETE
-        FROM customers
-        WHERE customerid =
-            (SELECT MAX(customerid)
-            FROM customers);
-        """
-    )
+    with con.cursor() as cursor:
+        cursor.execute(
+            """
+            DELETE
+            FROM customers
+            WHERE customerid =
+                (SELECT MAX(customerid)
+                FROM customers);
+            """
+        )
 
 
 def task_6_list_all_supplier_countries(cur) -> list:
