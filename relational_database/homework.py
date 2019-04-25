@@ -97,8 +97,8 @@ def task_5_delete_the_last_customer(con) -> None:
     Args:
         con: psycopg connection
     """
-    with con.cursor() as cursor:
-        cursor.execute(
+    with con.cursor() as cur:
+        cur.execute(
             """
             DELETE
             FROM customers
@@ -107,6 +107,7 @@ def task_5_delete_the_last_customer(con) -> None:
                 FROM customers)
             """
         )
+        con.commit()
 
 
 def task_6_list_all_supplier_countries(cur) -> list:
