@@ -46,10 +46,35 @@
 
     Колекціонерів можна порівнювати за ціною всіх їх автомобілів.
 """
+from typing import Union, List
+from constants import CARS_TYPES, CARS_PRODUCER
 
 
 class Cesar:
-    pass
+
+    def __init__(self, price, type_car, producer, number, mileage):
+        self.__price = price
+        self.__type = type_car
+        self.__producer = producer
+        self.number = number
+        self.mileage = mileage
+
+    @property
+    def price(self):
+        assert isinstance(self.__price, float), 'Price must be float'
+        return self.__price
+
+    @property
+    def type(self):
+        car = ''.join([x for x in CARS_TYPES if self.__type in x])
+        assert car, f'Select car in list {CARS_TYPES}'
+        return car
+
+    @property
+    def producer(self):
+        producer = ''.join([x for x in CARS_PRODUCER if self.__producer in x])
+        assert producer, f'Select producer in list {CARS_PRODUCER}'
+        return producer
 
 
 class Car:
@@ -60,3 +85,7 @@ class Garage:
     pass
 
 
+if __name__ == '__main__':
+
+    a = Cesar(price=213.32, type_car='Truck', producer='dsfds', number='num', mileage=123)
+    print(a.price, a.type, a.producer)
