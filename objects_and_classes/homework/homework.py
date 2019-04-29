@@ -48,49 +48,68 @@
 """
 from __future__ import annotations
 from typing import Union, List
-from constants import CARS_TYPES, CARS_PRODUCER
+from constants import CARS_TYPES, CARS_PRODUCER, TOWNS
 import uuid
 import random
 CT = Union[float, str, str, type(uuid.uuid4), float]
 
 
 class Cesar:
-    pass
+
+    def __init__(self, name: str, garages=0):
+        self.name = name
+        self.garages = garages
+        self.register_id = uuid.uuid4()
+
+    def __str__(self):
+        return f'Cesar on {self.name} have {self.garages} and hes register id {self.register_id}'
+
+    def hit_hat(self):
+        pass
+
+    def garages_count(self):
+        pass
+
+    def сars_count(self):
+        pass
+
+    def add_car(self):
+        pass
 
 
 class Car:
 
-    def __init__(self, price: float, type, producer, mileage: float):
+    def __init__(self, price: float, type_car, producer, mileage: float):
         self.price = price
-        self.type = type
+        self.type_car = type_car
         self.producer = producer
         self.number = uuid.uuid4()
         self.mileage = mileage
 
     def __str__(self):
-        return f'Specification for the car next: \n Price {self.price} \n Type {self.type} \
+        return f'Specification for the car next: \n Price {self.price} \n Type {self.type_car} \
         \n Producer {self.producer} \n Number {self.number} \n Mileage {self.mileage}'
 
     def __repr__(self):
-        return f'Car(price={self.price}, type={self.type}, producer={self.producer}, number={self.number}, mileage={self.mileage})>'
+        return f'Car(price={self.price}, type={self.type_car}, producer={self.producer}, number={self.number}, mileage={self.mileage})>'
 
     def __float__(self):
         return float(self.mileage), float(self.price)
 
     def __lt__(self, other: Car):
-        return other.price < self.price
+        return self.price < other.price
 
-    def __gt__(self, other):
-        return other.price > self.price
+    def __gt__(self, other: Car):
+        return self.price > other.price
 
-    def __eq__(self, other):
-        return other.price == self.price
+    def __eq__(self, other: Car):
+        return self.price == other.price
 
-    def __le__(self, other):
-        return other.price <= self.price
+    def __le__(self, other: Car):
+        return self.price <= other.price
 
-    def __ge__(self, other):
-        return other.price >= self.price
+    def __ge__(self, other: Car):
+        return self.price >= other.price
 
     @property
     def new_number(self):
@@ -99,16 +118,54 @@ class Car:
 
 
 class Garage:
-    pass
+
+    def __init__(self, town, places=10, owner=None):
+        self.town = town if town in TOWNS else []
+        self.cars = []
+        self.places = places
+        self.owner = owner
+
+    def __str__(self):
+        return f'cars list {self.cars}'
+
+    def add(self, car):
+        if car not in self.cars and len(self.cars) < 10:
+            self.cars.append(car)
+            return self.cars
+
+    def remove(self, car):
+        return self.cars.remove(car)
+
+    def hit_hat(self):
+        return sum(map(lambda x: x.price, self.cars))
 
 
 if __name__ == '__main__':
 
-    bmw = Car(price=35000.00, type='Truck', producer='BMW', mileage=0.0)
-    # ford = Car(price=25000.145, type_car='Sedan', producer='FORD')
-    # print(bmw.price, bmw.type, bmw.producer, bmw.number)
-    print(bmw)
-    print(repr(bmw))
+    # ces = Cesar(name='Pety', garages=2)
+    # print(ces)
+
+    bmw = Car(price=35000.00, type_car='Truck', producer='BMW', mileage=0.0)
+    ford = Car(price=25000.145, type_car='Sedan', producer='Ford', mileage=1)
+    gara = Garage(town='Amsterdam')
+    gara.add(bmw)
+    gara.add(ford)
+    gara.add(bmw)
+    print(gara.cars)
+    print(gara.hit_hat())
+    # gara.remove(bmw)
+    # print(gara.cars)
+
+    # ford = Car(price=25000.145, type_car='Sedan', producer='Ford', mileage=1)
+    # # print(bmw.price, bmw.type_car, bmw.producer, bmw.number)
+    # assert bmw.type_car and ford.type_car, f'Select type car {CARS_TYPES}'
+    # assert bmw.producer and ford.producer, f'Select producer {CARS_PRODUCER}'
+    # print(bmw)
+    # print(repr(bmw))
+    # print(ford > bmw)
+    # print(ford < bmw)
+    # print(ford == bmw)
+    # print(bmw >= ford)
     # print(f'bmw number is {bmw.number}')
     # print(f'bmw number has been changed to the {bmw.new_number}')
     # print(bmw)
