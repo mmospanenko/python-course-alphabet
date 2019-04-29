@@ -46,6 +46,7 @@
 
     Колекціонерів можна порівнювати за ціною всіх їх автомобілів.
 """
+from __future__ import annotations
 from typing import Union, List
 from constants import CARS_TYPES, CARS_PRODUCER
 import uuid
@@ -59,26 +60,24 @@ class Cesar:
 
 class Car:
 
-    def __init__(self, price: float, type, producer):
+    def __init__(self, price: float, type, producer, mileage: float):
         self.price = price
         self.type = type
         self.producer = producer
         self.number = uuid.uuid4()
-        self.mileage = f'{random.random() * 100:2f}'
-
-    @property
-    def new_number(self):
-        self.number = uuid.uuid4()
-        return self.number
+        self.mileage = mileage
 
     def __str__(self):
         return f'Specification for the car next: \n Price {self.price} \n Type {self.type} \
         \n Producer {self.producer} \n Number {self.number} \n Mileage {self.mileage}'
 
+    def __repr__(self):
+        return f'Car(price={self.price}, type={self.type}, producer={self.producer}, number={self.number}, mileage={self.mileage})>'
+
     def __float__(self):
         return float(self.mileage), float(self.price)
 
-    def __lt__(self, other):
+    def __lt__(self, other: Car):
         return other.price < self.price
 
     def __gt__(self, other):
@@ -93,6 +92,11 @@ class Car:
     def __ge__(self, other):
         return other.price >= self.price
 
+    @property
+    def new_number(self):
+        self.number = uuid.uuid4()
+        return self.number
+
 
 class Garage:
     pass
@@ -100,10 +104,11 @@ class Garage:
 
 if __name__ == '__main__':
 
-    bmw = Car(price=35000.00, type='Truck', producer='BMW')
+    bmw = Car(price=35000.00, type='Truck', producer='BMW', mileage=0.0)
     # ford = Car(price=25000.145, type_car='Sedan', producer='FORD')
     # print(bmw.price, bmw.type, bmw.producer, bmw.number)
     print(bmw)
+    print(repr(bmw))
     # print(f'bmw number is {bmw.number}')
     # print(f'bmw number has been changed to the {bmw.new_number}')
     # print(bmw)
