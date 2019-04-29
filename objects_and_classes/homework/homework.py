@@ -55,26 +55,39 @@ CT = Union[float, str, str, type(uuid.uuid4), float]
 
 
 class Cesar:
+    garages: List[Garage]
 
     def __init__(self, name: str, garages=0):
         self.name = name
-        self.garages = garages
+        self.garages = garages if garages else []
         self.register_id = uuid.uuid4()
 
     def __str__(self):
         return f'Cesar on {self.name} have {self.garages} and hes register id {self.register_id}'
 
     def hit_hat(self):
-        pass
+        return sum(map(lambda obj: obj.hit_hat(), self.garages))
 
     def garages_count(self):
-        pass
+        return len(self.garages)
 
     def сars_count(self):
-        pass
+        return [(len(obj.cars), obj) for obj in self.garages]
 
-    def add_car(self):
-        pass
+    def add_car(self, car, add_garage=None):
+
+        if add_garage:
+            if len(add_garage.cars) <= add_garage.places:
+                print('Car is added to the selected garage')
+                self.garages.append(add_garage.add_car(car))
+            self.garages.append(add_garage)
+
+        count, free_garage = min(self.сars_count())
+        if count < free_garage.places:
+            free_garage.add(car)
+            return
+        else:
+            print('Sorry all the places are taken')
 
 
 class Car:
@@ -118,8 +131,9 @@ class Car:
 
 
 class Garage:
+    owner: uuid.UUID
 
-    def __init__(self, town, places=10, owner=None):
+    def __init__(self, town, places=2, owner=None):
         self.town = town if town in TOWNS else []
         self.cars = []
         self.places = places
@@ -129,7 +143,7 @@ class Garage:
         return f'cars list {self.cars}'
 
     def add(self, car):
-        if car not in self.cars and len(self.cars) < 10:
+        if car not in self.cars and len(self.cars) <= self.places:
             self.cars.append(car)
             return self.cars
 
@@ -139,20 +153,34 @@ class Garage:
     def hit_hat(self):
         return sum(map(lambda x: x.price, self.cars))
 
+    def __lt__(self, other):
+        return self.cars < other.cars
+
 
 if __name__ == '__main__':
 
     # ces = Cesar(name='Pety', garages=2)
     # print(ces)
 
-    bmw = Car(price=35000.00, type_car='Truck', producer='BMW', mileage=0.0)
+    bmw = Car(price=55000.00, type_car='Truck', producer='BMW', mileage=0.0)
     ford = Car(price=25000.145, type_car='Sedan', producer='Ford', mileage=1)
+    dodge = Car(price=44000.145, type_car='Sedan', producer='Dodge', mileage=12)
     gara = Garage(town='Amsterdam')
+    gara_kiev = Garage(town='Kiev')
+    # gara_rome = Garage(town='Rome')
     gara.add(bmw)
     gara.add(ford)
-    gara.add(bmw)
+    gara.add(dodge)
     print(gara.cars)
     print(gara.hit_hat())
+    cesss = Cesar('Petro', [gara, gara_kiev])
+    cesss.hit_hat
+    print(cesss.garages)
+    cesss.add_car(bmw)
+    cesss.add_car(ford)
+    cesss.add_car(dodge)
+    print(cesss.garages)
+    print(gara_kiev.cars)
     # gara.remove(bmw)
     # print(gara.cars)
 
