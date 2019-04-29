@@ -83,7 +83,7 @@ class Cesar:
             self.garages.append(add_garage)
 
         count, free_garage = min(self.сars_count())
-        if count < free_garage.places:
+        if count <= free_garage.places:
             free_garage.add(car)
             return
         else:
