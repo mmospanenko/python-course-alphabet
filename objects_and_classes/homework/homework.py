@@ -74,20 +74,19 @@ class Cesar:
     def сars_count(self):
         return [(len(obj.cars), obj) for obj in self.garages]
 
-    def add_car(self, car, add_garage=None):
+    def add_car(self, car, garage=None):
 
-        if add_garage:
-            if len(add_garage.cars) <= add_garage.places:
-                print('Car is added to the selected garage')
-                self.garages.append(add_garage.add_car(car))
-            self.garages.append(add_garage)
+        if garage in self.garages:
+            if len(garage.cars) < garage.places:
+                print(f'Selected garage {garage.town}')
+                return garage.add(car)
+            print(f'Sorry garage in {garage.town} is full')
+            return
 
         count, free_garage = min(self.сars_count())
-        if count <= free_garage.places:
-            free_garage.add(car)
-            return
-        else:
-            print('Sorry all the places are taken')
+        if count < free_garage.places:
+            return free_garage.add(car)
+        print(f'Sorry all the places are taken')
 
 
 class Car:
@@ -133,7 +132,7 @@ class Car:
 class Garage:
     owner: uuid.UUID
 
-    def __init__(self, town, places=2, owner=None):
+    def __init__(self, town, places=3, owner=None):
         self.town = town if town in TOWNS else []
         self.cars = []
         self.places = places
@@ -143,9 +142,13 @@ class Garage:
         return f'cars list {self.cars}'
 
     def add(self, car):
-        if car not in self.cars and len(self.cars) <= self.places:
+        if car not in self.cars and len(self.cars) < self.places:
+            print(f'Car {car.producer} is added to garage {self.town}')
             self.cars.append(car)
             return self.cars
+        if car in self.cars:
+            print(f'The car {car.producer} is already in the garage {self.town}')
+            return
 
     def remove(self, car):
         return self.cars.remove(car)
@@ -159,41 +162,52 @@ class Garage:
 
 if __name__ == '__main__':
 
-    # ces = Cesar(name='Pety', garages=2)
-    # print(ces)
+    cars_list = []
+    for _ in range(3):
+        cars_list.append(
+            Car(
+                price=random.randint(1000, 100000) * 1.2,
+                type_car=random.choice(CARS_TYPES),
+                producer=random.choice(CARS_PRODUCER),
+                mileage=random.randint(10, 1000) * 1.2
+            )
+        )
 
-    bmw = Car(price=55000.00, type_car='Truck', producer='BMW', mileage=0.0)
-    ford = Car(price=25000.145, type_car='Sedan', producer='Ford', mileage=1)
-    dodge = Car(price=44000.145, type_car='Sedan', producer='Dodge', mileage=12)
+    garages_list = [Garage(town=random.choice(TOWNS)) for _ in range(3)]
+
     gara = Garage(town='Amsterdam')
-    gara_kiev = Garage(town='Kiev')
-    # gara_rome = Garage(town='Rome')
-    gara.add(bmw)
-    gara.add(ford)
-    gara.add(dodge)
+    for car in cars_list:
+        gara.add(car)
+
     print(gara.cars)
     print(gara.hit_hat())
-    cesss = Cesar('Petro', [gara, gara_kiev])
-    cesss.hit_hat
-    print(cesss.garages)
-    cesss.add_car(bmw)
-    cesss.add_car(ford)
-    cesss.add_car(dodge)
-    print(cesss.garages)
-    print(gara_kiev.cars)
-    # gara.remove(bmw)
-    # print(gara.cars)
 
-    # ford = Car(price=25000.145, type_car='Sedan', producer='Ford', mileage=1)
+    cesas = Cesar('Petro', garages_list)
+    print(cesas.hit_hat())
+    print(cesas.garages)
+    for _ in range(5):
+        for car in cars_list:
+            cesas.add_car(car)
+
+    print(len(gara.cars))
+    gara.remove(cars_list[0])
+    print(len(gara.cars))
+    # cesss.add_car(bugatti)
+    print(cesas.hit_hat())
+    print(cesas.сars_count())
+    print(cesas.garages_count())
+
+    bmw = Car(price=35000.145, type_car='Sedan', producer='BMW', mileage=1)
+    ford = Car(price=25000.145, type_car='Sedan', producer='Ford', mileage=1)
     # # print(bmw.price, bmw.type_car, bmw.producer, bmw.number)
     # assert bmw.type_car and ford.type_car, f'Select type car {CARS_TYPES}'
     # assert bmw.producer and ford.producer, f'Select producer {CARS_PRODUCER}'
     # print(bmw)
     # print(repr(bmw))
-    # print(ford > bmw)
-    # print(ford < bmw)
-    # print(ford == bmw)
-    # print(bmw >= ford)
+    print(ford > bmw)
+    print(ford < bmw)
+    print(ford == bmw)
+    print(bmw >= ford)
     # print(f'bmw number is {bmw.number}')
     # print(f'bmw number has been changed to the {bmw.new_number}')
     # print(bmw)
