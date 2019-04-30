@@ -46,6 +46,13 @@ if __name__ == "__main__":
 
     company = ITCompany(name="Ralabs", members=programmers, years=6)
 
+    default_list = [1, 2, 3, 4, 5, 6]
+    for i in default_list:
+        print(i)
+    # Lets see what we have in our company now
+    for member in company:
+        print(member)
+
     # Lets see what we have in our company now
     for p in company:
         print(p)
@@ -57,4 +64,3 @@ if __name__ == "__main__":
     # And this not
     batman = Programmer(name="Batman", position=["Team Lead"], language="Fists")
     print(f"Do we have this programmer {batman} in company {company}? -{batman in company}")
-
