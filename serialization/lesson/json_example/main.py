@@ -19,52 +19,64 @@ def print_separator() -> None:
 if __name__ == "__main__":
     # Lets see what we have in DATA
     print("GIVEN DATA")
-    show_me(DATA)
+    # show_me(DATA)
+    print(type(DATA))
     print_separator()
     # Lets see how json like string will look like
     json_formatted_str = json.dumps(DATA)
     print("JSON formatted string")
-    print(json_formatted_str)
+    print(type(json_formatted_str), json_formatted_str)
+    print_separator()
+
+    restored_data = eval(json_formatted_str)
+
+    print(type(restored_data))
     print_separator()
 
     # Lets dump json data to file
     with open("data.json", 'w') as file:
         json.dump(DATA, file)
 
-    # Lets save json data with params
+    print_separator()
+    # # Lets save json data with params
     with open("formatted_data.json", 'w') as file:
         json.dump(DATA, file, indent=4)
 
-    # Lets see restored data from string
+    with open("formatted_data.json", 'r') as file:
+        restored_data = json.load(file)
+        print(restored_data)
+    #
+    # # Lets see restored data from string
     restored_data = json.loads(json_formatted_str)
     print("Restored data")
     show_me(restored_data)
     print_separator()
-
-    # Lets add not serializable type
+    #
+    # # Lets add not serializable type
     data_2 = deepcopy(DATA)
     data_2['set'] = set(range(10))
-
+    #
     print_separator()
     print("Serialized data")
-    serialized_data_2 = ""
+    data_as_string = ""
     try:
-        serialized_data_2 = json.dumps(data_2)
+        data_as_string = json.dumps(data_2)
     except TypeError as e:
         print(e)
-
+    #
     try:
-        serialized_data_2 = json.dumps(data_2, cls=JsonEncoder)
+        data_as_string = json.dumps(data_2, cls=JsonEncoder)
     except TypeError as e:
         print(e)
     else:
-        print(serialized_data_2)
-
+        print(data_as_string)
+    #
     print_separator()
-    # Without hook
-    print(json.loads(serialized_data_2))
+    # # Without hook
+    restored_data = json.loads(data_as_string)
 
-    # With hook
+    # # With hook
     print_separator()
     print("With hook")
-    print(json.loads(serialized_data_2, object_hook=json_hook))
+    restored_data_with_hook = json.loads(data_as_string, object_hook=json_hook)
+    print("Something")

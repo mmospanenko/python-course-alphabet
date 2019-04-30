@@ -6,7 +6,10 @@
     - save to json
     - simple_json with json
     - json encoder
+        cls, default для сереалізація кастомних чи не дефолтний типів
+        
     - json hook
+        object_hook для десереалізації кастомних типів
   
 ### Useful links
 
@@ -40,3 +43,7 @@ https://habr.com/ru/company/otus/blog/353480/
 ### Useful links
 
 https://yaml.readthedocs.io/en/latest/install.html
+
+https://docs.python.org/3/library/typing.html
+
+### Decorators

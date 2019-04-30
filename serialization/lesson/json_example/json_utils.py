@@ -13,5 +13,6 @@ class JsonEncoder(json.JSONEncoder):
 
 def json_hook(obj):
     if 'set' in obj:
-        return list(obj)
+        return set(obj)
+
     return obj
