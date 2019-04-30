@@ -3,8 +3,7 @@
 # IDE files
 .idea
 __pycache__
-# virt env
+
 env
 venv
 virtualenv
-
