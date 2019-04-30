@@ -63,22 +63,26 @@ if __name__ == "__main__":
     # Create instance of Programmer
     programmer = Programmer(name="Anton")
 
-    print("Before", programmer.enough_coffee)
-    with programmer:
-        # our code
-        print("Until", programmer.enough_coffee)
+    # print("Before", programmer.enough_coffee)
+    # programmer.work()
+    # with programmer:
+    #     # our code
+    #     programmer.work()
+    #     print("Until", programmer.enough_coffee)
 
-    print("After", programmer.enough_coffee)
+    # print("After", programmer.enough_coffee)
 
-    # # Lets look what it have
+    # Lets look what it have
     # print(describe_object("programmer", programmer))
-    #
-    # # Lets see how it is converted to string
-    # print(f"{programmer}")
-    # print(programmer)
-    #
-    # # Lets see repr
-    # res = repr(programmer)
-    # print(res)
+
+    # Lets see how it is converted to string
+    print(str(programmer))
+    print(f"{programmer}")
+    print(programmer)
+
+    # Lets see repr
+    res = repr(programmer)
+    print(res)
     # recover_programmer = eval(res)
+    # print(recover_programmer.language)
     # print(programmer.position)
