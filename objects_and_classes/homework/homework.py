@@ -85,7 +85,7 @@ class Cesar:
 
         # count is count cars in garage, free_garage is object garage
         count, free_garage = min([(obj.places - len(obj.cars), obj) for obj in self.garages])
-        if count:
+        if not count:
             print(f'Sorry all the places are taken')
             return
         return free_garage.add(car)
