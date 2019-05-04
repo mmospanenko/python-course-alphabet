@@ -72,7 +72,7 @@ class Cesar:
         return len(self.garages)
 
     def сars_count(self):
-        return [(len(obj.cars), obj) for obj in self.garages]
+        return sum(map(lambda garage: len(garage.cars), self.garages))
 
     def add_car(self, car, garage=None):
 
@@ -83,7 +83,8 @@ class Cesar:
             print(f'Sorry garage in {garage.town} is full')
             return
 
-        count, free_garage = min(self.сars_count())
+        # count is count cars in garage, free_garage is object garage
+        count, free_garage = min([(len(obj.cars), obj) for obj in self.garages])
         if count < free_garage.places:
             return free_garage.add(car)
         print(f'Sorry all the places are taken')
