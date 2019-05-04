@@ -66,7 +66,7 @@ class Cesar:
         return f'Cesar on {self.name} have {self.garages} and hes register id {self.register_id}'
 
     def hit_hat(self):
-        return sum(map(lambda obj: obj.hit_hat(), self.garages))
+        return sum(map(lambda garage: garage.hit_hat(), self.garages))
 
     def garages_count(self):
         return len(self.garages)
@@ -83,12 +83,15 @@ class Cesar:
             print(f'Sorry garage in {garage.town} is full')
             return
 
-        # count is count cars in garage, free_garage is object garage
-        count, free_garage = min([(obj.places - len(obj.cars), obj) for obj in self.garages])
+        # count is free counts cars in garage, free_garage is object garage
+        count, free_garage = min([(item.places - len(item.cars), item) for item in self.garages])
         if not count:
             print(f'Sorry all the places are taken')
             return
         return free_garage.add(car)
+
+    def __lt__(self, other):
+        return self.hit_hat() < other.hit_hat()
 
 
 class Car:
@@ -162,7 +165,7 @@ class Garage:
             return self.cars.remove(car)
 
     def hit_hat(self):
-        return sum(map(lambda x: x.price, self.cars))
+        return sum(map(lambda car: car.price, self.cars))
 
     def __lt__(self, other):
         return self.cars < other.cars
@@ -172,7 +175,7 @@ if __name__ == '__main__':
 
     cars_list = []
     cars_list2 = []
-    for _ in range(3):
+    for _ in range(5):
         cars_list.append(
             Car(
                 price=random.randint(1000, 100000) * 1.2,
@@ -193,7 +196,7 @@ if __name__ == '__main__':
         )
 
     garages_list = [Garage(town=random.choice(TOWNS), places=random.randint(1, 20)) for _ in range(3)]
-    garages_list2 = [Garage(town=random.choice(TOWNS)) for _ in range(3)]
+    garages_list2 = [Garage(town=random.choice(TOWNS)) for _ in range(4)]
 
     gara = Garage(town='Amsterdam')
     for car in cars_list:
@@ -210,6 +213,10 @@ if __name__ == '__main__':
         for car in cars_list:
             cesas.add_car(car)
 
+    for _ in range(2):
+        for car in cars_list2:
+            cesas2.add_car(car)
+
     print(len(gara.cars))
     gara.remove(cars_list[0])
     print(len(gara.cars))
@@ -220,22 +227,9 @@ if __name__ == '__main__':
 
     bmw = Car(price=35000.145, type_car='Sedan', producer='BMW', mileage=1)
     ford = Car(price=25000.145, type_car='Sedan', producer='Ford', mileage=1)
-    # # print(bmw.price, bmw.type_car, bmw.producer, bmw.number)
-    # assert bmw.type_car and ford.type_car, f'Select type car {CARS_TYPES}'
-    # assert bmw.producer and ford.producer, f'Select producer {CARS_PRODUCER}'
-    # print(bmw)
-    # print(repr(bmw))
+
     print(ford > bmw)
     print(ford < bmw)
     print(ford == bmw)
     print(bmw >= ford)
-    # print(f'bmw number is {bmw.number}')
-    # print(f'bmw number has been changed to the {bmw.new_number}')
-    # print(bmw)
-    # print(type(uuid))
-    # print('___________')
-    # for k, v in bmw.logs.items(): print(f'{k} {v}')
-    # print('___________')
-    # print(bmw.price + ford.price)
-    # # print(bmw.mileage + ford.mileage)
-    # print(type(bmw.mileage))
+    print(cesas > cesas2)
