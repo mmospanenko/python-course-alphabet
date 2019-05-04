@@ -93,6 +93,9 @@ class Cesar:
     def __lt__(self, other):
         return self.hit_hat() < other.hit_hat()
 
+    def __ge__(self, other):
+        return self.hit_hat() >= other.hit_hat()
+
 
 class Car:
 
@@ -233,3 +236,4 @@ if __name__ == '__main__':
     print(ford == bmw)
     print(bmw >= ford)
     print(cesas > cesas2)
+    print(cesas == cesas2)
