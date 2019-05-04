@@ -84,27 +84,31 @@ class Cesar:
             return
 
         # count is count cars in garage, free_garage is object garage
-        count, free_garage = min([(len(obj.cars), obj) for obj in self.garages])
-        if count < free_garage.places:
-            return free_garage.add(car)
-        print(f'Sorry all the places are taken')
+        count, free_garage = min([(obj.places - len(obj.cars), obj) for obj in self.garages])
+        if count:
+            print(f'Sorry all the places are taken')
+            return
+        return free_garage.add(car)
 
 
 class Car:
 
     def __init__(self, price: float, type_car, producer, mileage: float):
         self.price = price
-        self.type_car = type_car
-        self.producer = producer
+        self.type_car = type_car if type_car in CARS_TYPES else []
+        self.producer = producer if producer in CARS_PRODUCER else []
         self.number = uuid.uuid4()
         self.mileage = mileage
+        assert self.type_car, f'Bad type car {type_car}. Select type from list {CARS_TYPES}'
+        assert self.producer, f'Bad producer {producer}. Select producer from list {CARS_TYPES}'
 
     def __str__(self):
         return f'Specification for the car next: \n Price {self.price} \n Type {self.type_car} \
         \n Producer {self.producer} \n Number {self.number} \n Mileage {self.mileage}'
 
     def __repr__(self):
-        return f'Car(price={self.price}, type={self.type_car}, producer={self.producer}, number={self.number}, mileage={self.mileage})>'
+        return f'Car(price={self.price}, type={self.type_car}, producer={self.producer},' \
+            f' number={self.number}, mileage={self.mileage})>'
 
     def __float__(self):
         return float(self.mileage), float(self.price)
@@ -138,6 +142,8 @@ class Garage:
         self.cars = []
         self.places = places
         self.owner = owner
+        assert self.town, f'Select towns from list {TOWNS}'
+        assert self.places >= len(self.cars), f'Max cars in garage is {self.places}'
 
     def __str__(self):
         return f'cars list {self.cars}'
@@ -152,7 +158,8 @@ class Garage:
             return
 
     def remove(self, car):
-        return self.cars.remove(car)
+        if self.cars:
+            return self.cars.remove(car)
 
     def hit_hat(self):
         return sum(map(lambda x: x.price, self.cars))
@@ -164,6 +171,7 @@ class Garage:
 if __name__ == '__main__':
 
     cars_list = []
+    cars_list2 = []
     for _ in range(3):
         cars_list.append(
             Car(
@@ -174,7 +182,18 @@ if __name__ == '__main__':
             )
         )
 
-    garages_list = [Garage(town=random.choice(TOWNS)) for _ in range(3)]
+    for _ in range(3):
+        cars_list2.append(
+            Car(
+                price=random.randint(1000, 100000) * 1.2,
+                type_car=random.choice(CARS_TYPES),
+                producer=random.choice(CARS_PRODUCER),
+                mileage=random.randint(10, 1000) * 1.2
+            )
+        )
+
+    garages_list = [Garage(town=random.choice(TOWNS), places=random.randint(1, 20)) for _ in range(3)]
+    garages_list2 = [Garage(town=random.choice(TOWNS)) for _ in range(3)]
 
     gara = Garage(town='Amsterdam')
     for car in cars_list:
@@ -184,6 +203,7 @@ if __name__ == '__main__':
     print(gara.hit_hat())
 
     cesas = Cesar('Petro', garages_list)
+    cesas2 = Cesar('Vasia', garages_list2)
     print(cesas.hit_hat())
     print(cesas.garages)
     for _ in range(5):
