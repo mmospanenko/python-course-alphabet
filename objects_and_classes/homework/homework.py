@@ -145,7 +145,6 @@ class Garage:
         self.places = places
         self.owner = owner
         assert self.town, f'Select towns from list {TOWNS}'
-        assert self.places >= len(self.cars), f'Max cars in garage is {self.places}'
 
     def __str__(self):
         return f'cars list {self.cars}'
