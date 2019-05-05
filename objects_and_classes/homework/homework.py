@@ -139,7 +139,7 @@ class Car:
 class Garage:
     owner: uuid.UUID
 
-    def __init__(self, town, places=3, owner=None):
+    def __init__(self, town, places: int, owner=None):
         self.town = town if town in TOWNS else []
         self.cars = []
         self.places = places
@@ -198,9 +198,9 @@ if __name__ == '__main__':
 
     garages_list = [Garage(town=random.choice(TOWNS), places=random.randint(1, 7))
                     for _ in range(3)]
-    garages_list2 = [Garage(town=random.choice(TOWNS)) for _ in range(4)]
+    garages_list2 = [Garage(town=random.choice(TOWNS), places=3) for _ in range(4)]
 
-    gara = Garage(town='Amsterdam')
+    gara = Garage(town='Amsterdam', places=3)
     for car in cars_list:
         gara.add(car)
 
