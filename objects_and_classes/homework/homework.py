@@ -76,15 +76,11 @@ class Cesar:
 
     def add_car(self, car, garage=None):
 
-        if garage in self.garages:
-            if len(garage.cars) < garage.places:
-                print(f'Selected garage {garage.town}')
-                return garage.add(car)
-            print(f'Sorry garage in {garage.town} is full')
-            return
+        if garage:
+            return garage.add(car)
 
         # count is free counts cars in garage, free_garage is object garage
-        count, free_garage = min([(item.places - len(item.cars), item) for item in self.garages])
+        count, free_garage = max([(item.places - len(item.cars), item) for item in self.garages])
         if not count:
             print(f'Sorry all the places are taken')
             return
@@ -155,13 +151,16 @@ class Garage:
         return f'cars list {self.cars}'
 
     def add(self, car):
-        if car not in self.cars and len(self.cars) < self.places:
+        car_in_garage = list(filter(lambda c: c.number == car.number, self.cars))
+        if not car_in_garage and len(self.cars) < self.places:
             print(f'Car {car.producer} is added to garage {self.town}')
             self.cars.append(car)
             return self.cars
-        if car in self.cars:
+        if car_in_garage:
             print(f'The car {car.producer} is already in the garage {self.town}')
             return
+        print(f'Sorry garage count is full (places={self.places}, count={len(self.cars)})')
+        return
 
     def remove(self, car):
         if self.cars:
@@ -198,7 +197,8 @@ if __name__ == '__main__':
             )
         )
 
-    garages_list = [Garage(town=random.choice(TOWNS), places=random.randint(1, 20)) for _ in range(3)]
+    garages_list = [Garage(town=random.choice(TOWNS), places=random.randint(1, 7))
+                    for _ in range(3)]
     garages_list2 = [Garage(town=random.choice(TOWNS)) for _ in range(4)]
 
     gara = Garage(town='Amsterdam')
