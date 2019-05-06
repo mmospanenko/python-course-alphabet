@@ -62,7 +62,7 @@ class Cesar:
         self.garages = garages if garages else []
         self.register_id = uuid.uuid4()
 
-    def __str__(self):
+    def __repr__(self):
         return f'Cesar on {self.name} have {self.garages} and hes register id {self.register_id}'
 
     def hit_hat(self):
@@ -71,7 +71,7 @@ class Cesar:
     def garages_count(self):
         return len(self.garages)
 
-    def сars_count(self):
+    def cars_count(self):
         return sum(map(lambda garage: len(garage.cars), self.garages))
 
     def add_car(self, car, garage=None):
@@ -89,8 +89,17 @@ class Cesar:
     def __lt__(self, other):
         return self.hit_hat() < other.hit_hat()
 
+    def __gt__(self, other):
+        return self.hit_hat() > other.hit_hat()
+
+    def __eq__(self, other):
+        return self.hit_hat() == other.hit_hat()
+
     def __ge__(self, other):
         return self.hit_hat() >= other.hit_hat()
+
+    def __le__(self, other):
+        return self.hit_hat() <= other.hit_hat()
 
 
 class Car:
@@ -139,14 +148,14 @@ class Car:
 class Garage:
     owner: uuid.UUID
 
-    def __init__(self, town, places: int, owner=None):
+    def __init__(self, town, places: int, cars=[], owner=None):
         self.town = town if town in TOWNS else []
-        self.cars = []
+        self.cars = cars
         self.places = places
         self.owner = owner
         assert self.town, f'Select towns from list {TOWNS}'
 
-    def __str__(self):
+    def __repr__(self):
         return f'cars list {self.cars}'
 
     def add(self, car):
@@ -170,6 +179,9 @@ class Garage:
 
     def __lt__(self, other):
         return self.cars < other.cars
+
+    def __gt__(self, other):
+        return self.cars > other.cars
 
 
 if __name__ == '__main__':
@@ -224,7 +236,8 @@ if __name__ == '__main__':
     print(len(gara.cars))
     # cesss.add_car(bugatti)
     print(cesas.hit_hat())
-    print(cesas.сars_count())
+    print(cesas.cars_count())
+    print(cesas2.cars_count())
     print(cesas.garages_count())
 
     bmw = Car(price=35000.145, type_car='Sedan', producer='BMW', mileage=1)
