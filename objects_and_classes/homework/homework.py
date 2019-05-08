@@ -164,6 +164,7 @@ class Garage:
             print(f'Car {car.producer} is added to garage {self.town}')
             self.cars.append(car)
             return self.cars
+
         if car_in_garage:
             print(f'The car {car.producer} is already in the garage {self.town}')
             return
