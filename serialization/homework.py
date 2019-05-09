@@ -1,6 +1,4 @@
 from __future__ import annotations
-import sys
-sys.path.append('..')
 from ruamel.yaml import YAML, yaml_object
 import uuid
 import random
@@ -160,7 +158,6 @@ if __name__ == '__main__':
     yaml_damp_car = YamlConverter.yaml_damp_second('yaml_damp_car', bmw)
     yaml_damp_garage = YamlConverter.yaml_damp_second('yaml_damp_garage', gara)
     yaml_damp_cesar = YamlConverter.yaml_damp_second('yaml_damp_cesar', cesas)
-
 
     yaml_load_cesar = YamlConverter.yaml_load('yaml_damp_cesar')
 
