@@ -1,5 +1,7 @@
 from __future__ import annotations
-from ruamel.yaml import YAML
+import sys
+sys.path.append('..')
+from ruamel.yaml import YAML, yaml_object
 import uuid
 import random
 from objects_and_classes.homework.constants import CARS_TYPES, CARS_PRODUCER, TOWNS
@@ -27,6 +29,7 @@ Advanced
 Добавити опрацьовку формату ini
 
 """
+yaml = YAML()
 
 
 class JsonConverter:
@@ -56,51 +59,11 @@ class YamlConverter:
     yaml = YAML()
 
     @classmethod
-    def to_damp(cls, data):
-        data = data.__dict__
-        if data.get('garages'):
-            ces = {key: data[key] for key in data}
-            garages = [garage.__dict__ for garage in ces['garages']]
-            garages_list = []
-            for item in garages:
-                garages_dict = {}
-                for key in item:
-                    garages_dict[key] = item[key]
-                    if key == 'cars':
-                        cars_list = []
-                        for item_car in item[key]:
-                            item_car.__dict__['number'] = str(
-                                item_car.__dict__['number']
-                            )
-                            cars_list.append(item_car.__dict__)
-                        garages_dict['cars'] = cars_list
-                        garages_list.append(garages_dict)
-            data = {'Cesar': {'name': data['name'],
-                              'register_id': str(data['register_id']),
-                              'garages': garages_list
-                              }
-                    }
-            return data
-
-        if data.get('type_car'):
-            data['number'] = str(data['number'])
-            return dict(data)
-
-        if data.get('town'):
-            garages_list = []
-            garages_dict = {}
-            for key in data:
-                garages_dict[key] = data[key]
-                if key == 'cars':
-                    cars_list = []
-                    for item_car in data[key]:
-                        item_car.__dict__['number'] = str(
-                            item_car.__dict__['number']
-                        )
-                        cars_list.append(item_car.__dict__)
-                    garages_dict['cars'] = cars_list
-                    garages_list.append(garages_dict)
-            return garages_list
+    def yaml_damp_second(cls, file_name, data):
+        yaml_format = '{}.yaml'.format(file_name)
+        with open(yaml_format, "w") as file:
+            config = yaml_damp_cesar = yaml.dump(bmw, file)
+        return config
 
     @classmethod
     def yaml_damp(cls, file_name, data):
@@ -194,9 +157,10 @@ if __name__ == '__main__':
     cr_cesar_damp = JsonConverter.json_damp('cesar_damp', cesas)
     load_cesar_damp = JsonConverter.json_load('cesar_damp')
 
-    yaml_damp_cesar = YamlConverter.yaml_damp('yaml_damp_cesar', cesas)
-    yaml_damp_cesar = YamlConverter.yaml_damp('yaml_damp_car', bmw)
-    yaml_damp_cesar = YamlConverter.yaml_damp('yaml_damp_garage', gara)
+    yaml_damp_car = YamlConverter.yaml_damp_second('yaml_damp_car', bmw)
+    yaml_damp_garage = YamlConverter.yaml_damp_second('yaml_damp_garage', gara)
+    yaml_damp_cesar = YamlConverter.yaml_damp_second('yaml_damp_cesar', cesas)
+
 
     yaml_load_cesar = YamlConverter.yaml_load('yaml_damp_cesar')
 

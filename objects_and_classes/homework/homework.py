@@ -51,10 +51,14 @@ from typing import Union, List
 from .constants import CARS_TYPES, CARS_PRODUCER, TOWNS
 import uuid
 import random
+from ruamel.yaml import YAML, yaml_object
 CT = Union[float, str, str, type(uuid.uuid4), float]
+yaml = YAML()
 
 
+@yaml_object(yaml)
 class Cesar:
+    yaml_tag = u'!cesar'
     garages: List[Garage]
 
     def __init__(self, name: str, garages=0):
@@ -104,14 +108,29 @@ class Cesar:
     def __le__(self, other):
         return self.hit_hat() <= other.hit_hat()
 
+    @classmethod
+    def to_yaml(cls, representer, node):
+        return representer.represent_scalar(
+            cls.yaml_tag,
+            '{.name}-{.garages}-{.register_id}'.format(
+                node, node,
+                node)
+        )
 
+    @classmethod
+    def from_yaml(cls, constructor, node):
+        return cls(*node.value.split('_'))
+
+
+@yaml_object(yaml)
 class Car:
+    yaml_tag = u'!car'
 
-    def __init__(self, price: float, type_car, producer, mileage: float):
+    def __init__(self, price: float, type_car, producer, mileage: float, number=uuid.uuid4()):
         self.price = price
         self.type_car = type_car if type_car in CARS_TYPES else []
         self.producer = producer if producer in CARS_PRODUCER else []
-        self.number = uuid.uuid4()
+        self.number = number
         self.mileage = mileage
         assert self.type_car, f'Bad type car {type_car}. '\
             f'Select type from list {CARS_TYPES}'
@@ -152,8 +171,24 @@ class Car:
         self.number = uuid.uuid4()
         return self.number
 
+    @classmethod
+    def to_yaml(cls, representer, node):
+        return representer.represent_scalar(
+            cls.yaml_tag,
+            '{.price}_{.type_car}_{.producer}_{.number}_{.mileage}'.format(
+                node, node,
+                node, node,
+                node)
+        )
 
+    @classmethod
+    def from_yaml(cls, constructor, node):
+        return cls(*node.value.split('_'))
+
+
+@yaml_object(yaml)
 class Garage:
+    yaml_tag = u'!garage'
     owner: uuid.UUID
 
     def __init__(self, town, places: int, cars=[], owner=None):
@@ -196,6 +231,19 @@ class Garage:
 
     def __gt__(self, other):
         return self.cars > other.cars
+
+    @classmethod
+    def to_yaml(cls, representer, node):
+        return representer.represent_scalar(
+            cls.yaml_tag,
+            '{.town}-{.cars}-{.places}-{.owner}'.format(
+                node, node,
+                node, node)
+        )
+
+    @classmethod
+    def from_yaml(cls, constructor, node):
+        return cls(*node.value.split('_'))
 
 
 if __name__ == '__main__':
