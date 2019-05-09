@@ -30,10 +30,10 @@ def object_comparison(obj, class_obj):
 def json_hook(obj):
     if 'set' in obj:
         return set(obj)
-    car_arg = object_comparison(obj, Car)
-    cesar_arg = object_comparison(obj, Cesar)
-    garage_arg = object_comparison(obj, Garage)
-    if all(car_arg):
+    car_args = object_comparison(obj, Car)
+    cesar_args = object_comparison(obj, Cesar)
+    garage_args = object_comparison(obj, Garage)
+    if all(car_args):
         create_car = Car(
             price=obj['price'],
             type_car=obj['type_car'],
@@ -42,7 +42,7 @@ def json_hook(obj):
         )
         create_car.number = obj['number']
         return create_car
-    if all(garage_arg):
+    if all(garage_args):
         create_garage = Garage(
             town=obj['town'],
             places=obj['places'],
@@ -50,7 +50,7 @@ def json_hook(obj):
             owner=obj['owner']
         )
         return create_garage
-    if all(cesar_arg):
+    if all(cesar_args):
         create_cesar = Cesar(name=obj['name'], garages=obj['garages'])
         create_cesar.register_id = obj['register_id']
         return create_cesar
