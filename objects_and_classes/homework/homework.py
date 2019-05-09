@@ -61,10 +61,10 @@ class Cesar:
     yaml_tag = u'!cesar'
     garages: List[Garage]
 
-    def __init__(self, name: str, garages=0):
+    def __init__(self, name: str, garages=0, register_id=uuid.uuid4()):
         self.name = name
         self.garages = garages if garages else []
-        self.register_id = uuid.uuid4()
+        self.register_id = register_id
 
     def __repr__(self):
         return f'Cesar {self.name} have {self.garages} and hes register id '\
@@ -112,13 +112,12 @@ class Cesar:
     def to_yaml(cls, representer, node):
         return representer.represent_scalar(
             cls.yaml_tag,
-            '{.name}-{.garages}-{.register_id}'.format(
-                node, node,
-                node)
+            '{.name}_{.garages}_{.register_id}'.format(node, node, node)
         )
 
     @classmethod
     def from_yaml(cls, constructor, node):
+        import ipdb; ipdb.set_trace()
         return cls(*node.value.split('_'))
 
 
@@ -175,10 +174,8 @@ class Car:
     def to_yaml(cls, representer, node):
         return representer.represent_scalar(
             cls.yaml_tag,
-            '{.price}_{.type_car}_{.producer}_{.number}_{.mileage}'.format(
-                node, node,
-                node, node,
-                node)
+            '{.price}_{.type_car}_{.producer}_{.mileage}_{.number}'.format(
+                node, node, node, node, node)
         )
 
     @classmethod
@@ -236,9 +233,8 @@ class Garage:
     def to_yaml(cls, representer, node):
         return representer.represent_scalar(
             cls.yaml_tag,
-            '{.town}-{.cars}-{.places}-{.owner}'.format(
-                node, node,
-                node, node)
+            '{.town}_{.cars}_{.places}_{.owner}'.format(
+                node, node, node, node)
         )
 
     @classmethod

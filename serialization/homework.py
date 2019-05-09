@@ -57,18 +57,10 @@ class YamlConverter:
     yaml = YAML()
 
     @classmethod
-    def yaml_damp_second(cls, file_name, data):
-        yaml_format = '{}.yaml'.format(file_name)
-        with open(yaml_format, "w") as file:
-            config = yaml_damp_cesar = yaml.dump(bmw, file)
-        return config
-
-    @classmethod
     def yaml_damp(cls, file_name, data):
-        data = cls.to_damp(data)
         yaml_format = '{}.yaml'.format(file_name)
         with open(yaml_format, "w") as file:
-            config = cls.yaml.dump(data, file)
+            config = yaml.dump(data, file)
         return config
 
     @classmethod
@@ -155,11 +147,13 @@ if __name__ == '__main__':
     cr_cesar_damp = JsonConverter.json_damp('cesar_damp', cesas)
     load_cesar_damp = JsonConverter.json_load('cesar_damp')
 
-    yaml_damp_car = YamlConverter.yaml_damp_second('yaml_damp_car', bmw)
-    yaml_damp_garage = YamlConverter.yaml_damp_second('yaml_damp_garage', gara)
-    yaml_damp_cesar = YamlConverter.yaml_damp_second('yaml_damp_cesar', cesas)
+    yaml_damp_car = YamlConverter.yaml_damp('yaml_damp_car', bmw)
+    yaml_damp_garage = YamlConverter.yaml_damp('yaml_damp_garage', gara)
+    yaml_damp_cesar = YamlConverter.yaml_damp('yaml_damp_cesar', cesas)
 
     yaml_load_cesar = YamlConverter.yaml_load('yaml_damp_cesar')
+    yaml_load_garage = YamlConverter.yaml_load('yaml_damp_garage')
+    yaml_load_car = YamlConverter.yaml_load('yaml_damp_car')
 
     picle_damp_cesar = PicleConverter.picle_damp('picle_damp_cesar', cesas)
     picle_load_cesar = PicleConverter.picle_load('picle_damp_cesar')
