@@ -117,7 +117,6 @@ class Cesar:
 
     @classmethod
     def from_yaml(cls, constructor, node):
-        import ipdb; ipdb.set_trace()
         return cls(*node.value.split('_'))
 
 
@@ -174,7 +173,7 @@ class Car:
     def to_yaml(cls, representer, node):
         return representer.represent_scalar(
             cls.yaml_tag,
-            '{.price}_{.type_car}_{.producer}_{.mileage}_{.number}'.format(
+            '{.price:2f}_{.type_car}_{.producer}_{.mileage:2f}_{.number}'.format(
                 node, node, node, node, node)
         )
 
