@@ -49,8 +49,7 @@ class JsonConverter:
         json_format = '{}.json'.format(file_name)
         with open(json_format, 'r') as file:
             js_damp = json.load(file, object_hook=json_hook)
-
-        # return js_damp
+        return js_damp
 
 
 class YamlConverter:
