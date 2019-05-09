@@ -55,14 +55,13 @@ class JsonConverter:
 
 
 class YamlConverter:
-    def __init__(self):
-        self.yaml = YAML()
+    yaml = YAML()
 
     @classmethod
     def yaml_damp(cls, file_name, data):
         yaml_format = '{}.yaml'.format(file_name)
         with open(yaml_format, "w") as file:
-            config = cls.yaml.damp(data, file)
+            config = cls.yaml.dump(data, file)
         return config
 
 
