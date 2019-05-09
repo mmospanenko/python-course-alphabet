@@ -48,7 +48,7 @@
 """
 from __future__ import annotations
 from typing import Union, List
-from constants import CARS_TYPES, CARS_PRODUCER, TOWNS
+from .constants import CARS_TYPES, CARS_PRODUCER, TOWNS
 import uuid
 import random
 CT = Union[float, str, str, type(uuid.uuid4), float]
@@ -63,7 +63,8 @@ class Cesar:
         self.register_id = uuid.uuid4()
 
     def __repr__(self):
-        return f'Cesar on {self.name} have {self.garages} and hes register id {self.register_id}'
+        return f'Cesar {self.name} have {self.garages} and hes register id '\
+            f'{self.register_id}'
 
     def hit_hat(self):
         return sum(map(lambda garage: garage.hit_hat(), self.garages))
@@ -80,7 +81,9 @@ class Cesar:
             return garage.add(car)
 
         # count is free counts cars in garage, free_garage is object garage
-        count, free_garage = max([(item.places - len(item.cars), item) for item in self.garages])
+        count, free_garage = max(
+            [(item.places - len(item.cars), item) for item in self.garages]
+        )
         if not count:
             print(f'Sorry all the places are taken')
             return
@@ -110,16 +113,21 @@ class Car:
         self.producer = producer if producer in CARS_PRODUCER else []
         self.number = uuid.uuid4()
         self.mileage = mileage
-        assert self.type_car, f'Bad type car {type_car}. Select type from list {CARS_TYPES}'
-        assert self.producer, f'Bad producer {producer}. Select producer from list {CARS_TYPES}'
+        assert self.type_car, f'Bad type car {type_car}. '\
+            f'Select type from list {CARS_TYPES}'
+        assert self.producer, f'Bad producer {producer}. '\
+            f'Select producer from list {CARS_TYPES}'
 
     def __str__(self):
-        return f'Specification for the car next: \n Price {self.price} \n Type {self.type_car} \
-        \n Producer {self.producer} \n Number {self.number} \n Mileage {self.mileage}'
+        return f'Specification for the car next: \n Price {self.price} \
+        \n Type {self.type_car} \
+        \n Producer {self.producer} \n Number {self.number} \
+        \n Mileage {self.mileage}'
 
     def __repr__(self):
-        return f'Car(price={self.price}, type={self.type_car}, producer={self.producer},' \
-            f' number={self.number}, mileage={self.mileage})>'
+        return f'Car(price={self.price}, type={self.type_car}, ' \
+            f'producer={self.producer}, number={self.number}, '\
+            f'mileage={self.mileage})'
 
     def __float__(self):
         return float(self.mileage), float(self.price)
@@ -156,19 +164,24 @@ class Garage:
         assert self.town, f'Select towns from list {TOWNS}'
 
     def __repr__(self):
-        return f'cars list {self.cars}'
+        return f'Garage: Town {self.town}, Cars {self.cars},' \
+            f'Places {self.places}, Owner {self.owner}'
 
     def add(self, car):
-        car_in_garage = list(filter(lambda c: c.number == car.number, self.cars))
+        car_in_garage = list(
+            filter(lambda c: c.number == car.number, self.cars)
+        )
         if not car_in_garage and len(self.cars) < self.places:
             print(f'Car {car.producer} is added to garage {self.town}')
             self.cars.append(car)
             return self.cars
 
         if car_in_garage:
-            print(f'The car {car.producer} is already in the garage {self.town}')
+            print(f'The car {car.producer} is already in the garage '
+                  f'{self.town}')
             return
-        print(f'Sorry garage count is full (places={self.places}, count={len(self.cars)})')
+        print(f'Sorry garage count is full (places={self.places}, '
+              f'count={len(self.cars)})')
         return
 
     def remove(self, car):
