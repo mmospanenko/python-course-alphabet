@@ -27,7 +27,6 @@ Advanced
 Добавити опрацьовку формату ini
 
 """
-yaml = YAML()
 
 
 class JsonConverter:
@@ -60,7 +59,7 @@ class YamlConverter:
     def yaml_damp(cls, file_name, data):
         yaml_format = '{}.yaml'.format(file_name)
         with open(yaml_format, "w") as file:
-            config = yaml.dump(data, file)
+            config = cls.yaml.dump(data, file)
         return config
 
     @classmethod
