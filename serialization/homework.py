@@ -1,14 +1,14 @@
 from __future__ import annotations
 import sys
 sys.path.append('..')
-from json_utils import JsonEncoder, json_hook
-import json
-from typing import Union, List
-from objects_and_classes.homework.homework import Cesar, Car, Garage
-from objects_and_classes.homework.constants import CARS_TYPES, CARS_PRODUCER, TOWNS
-import random
+from ruamel.yaml import YAML
 import uuid
 import random
+from objects_and_classes.homework.constants import CARS_TYPES, CARS_PRODUCER, TOWNS
+from objects_and_classes.homework.homework import Cesar, Car, Garage
+from typing import Union, List
+import json
+from json_utils import JsonEncoder, json_hook
 """
 Для попереднього домашнього завдання.
 Для класу Колекціонер Машина і Гараж написати методи, які створюють інстанс обєкту
@@ -28,7 +28,6 @@ Advanced
 Добавити опрацьовку формату ini
 
 """
-CT = Union[float, str, str, type(uuid.uuid4), float]
 
 
 class JsonConverter:
@@ -53,6 +52,18 @@ class JsonConverter:
             js_damp = json.load(file, object_hook=json_hook)
 
         return js_damp
+
+
+class YamlConverter:
+    def __init__(self):
+        self.yaml = YAML()
+
+    @classmethod
+    def yaml_damp(cls, file_name, data):
+        yaml_format = '{}.yaml'.format(file_name)
+        with open(yaml_format, "w") as file:
+            config = cls.yaml.damp(data, file)
+        return config
 
 
 if __name__ == '__main__':
@@ -106,4 +117,5 @@ if __name__ == '__main__':
 
     cr_cesar_damp = JsonConverter.json_damp('cesar_damp', cesas)
     load_cesar_damp = JsonConverter.json_load('cesar_damp')
-    import ipdb; ipdb.set_trace()
+
+    yaml_damp_cesar = YamlConverter.yaml_damp('yaml_damp_cesar', cesas)
