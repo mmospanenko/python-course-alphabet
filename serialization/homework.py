@@ -131,11 +131,15 @@ if __name__ == '__main__':
     garages_list2 = [Garage(town=random.choice(TOWNS), places=3) for _ in range(4)]
 
     gara = Garage(town='Amsterdam', places=3)
+    gara2 = Garage(town='Prague', places=3)
     for car in cars_list:
         gara.add(car)
-
+    gara.add(ford)
+    gara2.add(ford)
+    gara2.add(bmw)
     cesas = Cesar('Petro', garages_list)
     cesas2 = Cesar('Vasia', garages_list2)
+    cesas3 = Cesar('Oleg', gara)
 
     cr_gara_damps = JsonConverter.json_damps(gara)
     loads_gara_damps = JsonConverter.json_loads(cr_gara_damps)
@@ -148,7 +152,7 @@ if __name__ == '__main__':
 
     yaml_damp_car = YamlConverter.yaml_damp('yaml_damp_car', bmw)
     yaml_damp_garage = YamlConverter.yaml_damp('yaml_damp_garage', gara)
-    yaml_damp_cesar = YamlConverter.yaml_damp('yaml_damp_cesar', cesas)
+    yaml_damp_cesar = YamlConverter.yaml_damp('yaml_damp_cesar', cesas3)
 
     yaml_load_cesar = YamlConverter.yaml_load('yaml_damp_cesar')
     yaml_load_garage = YamlConverter.yaml_load('yaml_damp_garage')
