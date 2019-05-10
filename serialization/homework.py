@@ -1,6 +1,4 @@
 from __future__ import annotations
-import sys
-sys.path.append('..')
 from ruamel.yaml import YAML, yaml_object
 import uuid
 import random
