@@ -110,14 +110,14 @@ class Cesar:
 
     @classmethod
     def to_yaml(cls, representer, node):
-        return representer.represent_scalar(
-            cls.yaml_tag,
-            '{.name}_{.garages}_{.register_id}'.format(node, node, node)
-        )
+        node.__dict__['register_id'] = str(node.__dict__['register_id'])
+        return representer.represent_mapping(cls.yaml_tag, node.__dict__)
 
     @classmethod
     def from_yaml(cls, constructor, node):
-        return cls(*node.value.split('_'))
+        items = constructor.construct_pairs(node)
+        values = [value[1] for value in items]
+        return cls(*values)
 
 
 @yaml_object(yaml)
@@ -171,15 +171,14 @@ class Car:
 
     @classmethod
     def to_yaml(cls, representer, node):
-        return representer.represent_scalar(
-            cls.yaml_tag,
-            '{.price:2f}_{.type_car}_{.producer}_{.mileage:2f}_{.number}'.format(
-                node, node, node, node, node)
-        )
+        node.__dict__['number'] = str(node.__dict__['number'])
+        return representer.represent_mapping(cls.yaml_tag, node.__dict__)
 
     @classmethod
     def from_yaml(cls, constructor, node):
-        return cls(*node.value.split('_'))
+        items = constructor.construct_pairs(node)
+        values = [value[1] for value in items]
+        return cls(*values)
 
 
 @yaml_object(yaml)
@@ -187,7 +186,7 @@ class Garage:
     yaml_tag = u'!garage'
     owner: uuid.UUID
 
-    def __init__(self, town, places: int, cars=[], owner=None):
+    def __init__(self, town, cars=[], places=int, owner=None):
         self.town = town if town in TOWNS else []
         self.cars = cars
         self.places = places
@@ -230,15 +229,13 @@ class Garage:
 
     @classmethod
     def to_yaml(cls, representer, node):
-        return representer.represent_scalar(
-            cls.yaml_tag,
-            '{.town}_{.cars}_{.places}_{.owner}'.format(
-                node, node, node, node)
-        )
+        return representer.represent_mapping(cls.yaml_tag, node.__dict__)
 
     @classmethod
     def from_yaml(cls, constructor, node):
-        return cls(*node.value.split('_'))
+        items = constructor.construct_pairs(node)
+        values = [value[1] for value in items]
+        return cls(*values)
 
 
 if __name__ == '__main__':
