@@ -59,7 +59,7 @@ class YamlConverter:
     def yaml_damp(cls, file_name, data):
         yaml_format = '{}.yaml'.format(file_name)
         with open(yaml_format, "w") as file:
-            cls.yaml.indent(mapping=4, sequence=6, offset=3)
+            cls.yaml.indent(mapping=4, sequence=10, offset=8)
             config = cls.yaml.dump(data, file)
         return config
 
@@ -111,11 +111,6 @@ if __name__ == '__main__':
         mileage=random.randint(10, 1000) * 1.2
     )
     ford = Car(price=25000.145, type_car='Sedan', producer='Ford', mileage=1)
-    cr_damp = JsonConverter.json_damps(bmw)
-    print("Success")
-    print(type(cr_damp), cr_damp)
-    bmw2 = JsonConverter.json_loads(cr_damp)
-    print(type(bmw2), bmw2)
 
     cars_list = [bmw3, bmw4, ford]
 
@@ -134,6 +129,12 @@ if __name__ == '__main__':
     cesas2 = Cesar('Vasia', garages_list2)
     cesas3 = Cesar('Oleg', [gara])
 
+    print('*' * 50)
+    print('JSON')
+    cr_damp = JsonConverter.json_damps(bmw)
+    print(type(cr_damp), cr_damp)
+    bmw2 = JsonConverter.json_loads(cr_damp)
+    print(type(bmw2), bmw2)
     cr_gara_damps = JsonConverter.json_damps(gara)
     loads_gara_damps = JsonConverter.json_loads(cr_gara_damps)
 
@@ -142,18 +143,29 @@ if __name__ == '__main__':
 
     cr_cesar_damp = JsonConverter.json_damp('cesar_damp', cesas)
     load_cesar_damp = JsonConverter.json_load('cesar_damp')
+    print('load_cesar', load_cesar_damp.hit_hat())
+    print('loads_cesar', loads_cesar_damps.hit_hat())
+    print(cesas.hit_hat())
 
+    print('*' * 50)
+    print('YAML')
     yaml_damp_car = YamlConverter.yaml_damp('yaml_damp_car', bmw)
     yaml_damp_garage = YamlConverter.yaml_damp('yaml_damp_garage', gara)
-    yaml_damp_cesar = YamlConverter.yaml_damp('yaml_damp_cesar', cesas3)
+    yaml_damp_cesar = YamlConverter.yaml_damp('yaml_damp_cesar', cesas)
 
     yaml_load_cesar = YamlConverter.yaml_load('yaml_damp_cesar')
     yaml_load_garage = YamlConverter.yaml_load('yaml_damp_garage')
     yaml_load_car = YamlConverter.yaml_load('yaml_damp_car')
-    print(yaml_load_cesar.hit_hat())
+    print('yaml_load', yaml_load_cesar.hit_hat())
+    print(cesas.hit_hat())
 
+    print('*' * 50)
+    print('PICLE')
     picle_damp_cesar = PicleConverter.picle_damp('picle_damp_cesar', cesas)
     picle_load_cesar = PicleConverter.picle_load('picle_damp_cesar')
 
     picle_damps_cesar = PicleConverter.picle_damps(cesas)
     picle_loads_cesar = PicleConverter.picle_loads(picle_damps_cesar)
+    print('picle_loads', picle_loads_cesar.hit_hat())
+    print('picle_load', picle_load_cesar.hit_hat())
+    print(cesas.hit_hat())

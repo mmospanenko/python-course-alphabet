@@ -180,8 +180,9 @@ class Car:
 
     @classmethod
     def from_yaml(cls, constructor, node):
-        items = constructor.construct_pairs(node)
-        value = {key: value for key, value in items}
+        value = ruamel.yaml.constructor.SafeConstructor.construct_mapping(
+            constructor, node, deep=True
+        )
         instance = cls(
             price=value['price'],
             type_car=value['type_car'],
@@ -244,8 +245,9 @@ class Garage:
 
     @classmethod
     def from_yaml(cls, constructor, node):
-        items = constructor.construct_pairs(node)
-        value = {key: value for key, value in items}
+        value = ruamel.yaml.constructor.SafeConstructor.construct_mapping(
+            constructor, node, deep=True
+        )
         instance = Garage(
             town=value['town'],
             places=value['places'],

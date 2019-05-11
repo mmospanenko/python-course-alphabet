@@ -1,0 +1,37 @@
+!cesar
+name: Petro
+garages:
+        - !garage
+          town: Berlin
+          cars: &id001
+                  - !car
+                    price: 101716.8
+                    type_car: SUV
+                    producer: BMW
+                    number: e90eb2e2-e8a6-439f-be07-ee4f9efdc2f1
+                    mileage: 31.2
+                  - !car
+                    price: 2946.0
+                    type_car: Luxury Car
+                    producer: Chevrolet
+                    number: 9652cae4-9fd2-4edb-8a20-88d04329d865
+                    mileage: 92.39999999999999
+                  - !car
+                    price: 25000.145
+                    type_car: Sedan
+                    producer: Ford
+                    number: a9490f37-7ed9-42e9-9d46-a3dc3733a9d2
+                    mileage: 1
+          places: 1
+          owner:
+        - !garage
+          town: Amsterdam
+          cars: *id001
+          places: 5
+          owner:
+        - !garage
+          town: London
+          cars: *id001
+          places: 6
+          owner:
+register_id: ff235e3c-a962-44d6-ae8a-0444323caaba
