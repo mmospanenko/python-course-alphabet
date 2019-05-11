@@ -1,13 +1,13 @@
 from __future__ import annotations
-from ruamel.yaml import YAML, yaml_object
-import uuid
-import random
-from objects_and_classes.homework.constants import CARS_TYPES, CARS_PRODUCER, TOWNS
-from objects_and_classes.homework.homework import Cesar, Car, Garage
-from typing import Union, List
-import json
-from json_utils import JsonEncoder, json_hook
 import pickle
+from json_utils import JsonEncoder, json_hook
+import json
+from typing import Union, List
+from objects_and_classes.homework.homework import Cesar, Car, Garage
+from objects_and_classes.homework.constants import CARS_TYPES, CARS_PRODUCER, TOWNS
+import random
+import uuid
+from ruamel.yaml import YAML, yaml_object
 """
 Для попереднього домашнього завдання.
 Для класу Колекціонер Машина і Гараж написати методи, які створюють інстанс обєкту
@@ -59,6 +59,7 @@ class YamlConverter:
     def yaml_damp(cls, file_name, data):
         yaml_format = '{}.yaml'.format(file_name)
         with open(yaml_format, "w") as file:
+            cls.yaml.indent(mapping=4, sequence=6, offset=3)
             config = cls.yaml.dump(data, file)
         return config
 
@@ -97,6 +98,18 @@ class PicleConverter:
 if __name__ == '__main__':
 
     bmw = Car(price=35000.145, type_car='Sedan', producer='BMW', mileage=1)
+    bmw3 = Car(
+        price=random.randint(1000, 100000) * 1.2,
+        type_car=random.choice(CARS_TYPES),
+        producer=random.choice(CARS_PRODUCER),
+        mileage=random.randint(10, 1000) * 1.2
+    )
+    bmw4 = Car(
+        price=random.randint(1000, 100000) * 1.2,
+        type_car=random.choice(CARS_TYPES),
+        producer=random.choice(CARS_PRODUCER),
+        mileage=random.randint(10, 1000) * 1.2
+    )
     ford = Car(price=25000.145, type_car='Sedan', producer='Ford', mileage=1)
     cr_damp = JsonConverter.json_damps(bmw)
     print("Success")
@@ -104,27 +117,7 @@ if __name__ == '__main__':
     bmw2 = JsonConverter.json_loads(cr_damp)
     print(type(bmw2), bmw2)
 
-    cars_list = []
-    cars_list2 = []
-    for _ in range(5):
-        cars_list.append(
-            Car(
-                price=random.randint(1000, 100000) * 1.2,
-                type_car=random.choice(CARS_TYPES),
-                producer=random.choice(CARS_PRODUCER),
-                mileage=random.randint(10, 1000) * 1.2
-            )
-        )
-
-    for _ in range(3):
-        cars_list2.append(
-            Car(
-                price=random.randint(1000, 100000) * 1.2,
-                type_car=random.choice(CARS_TYPES),
-                producer=random.choice(CARS_PRODUCER),
-                mileage=random.randint(10, 1000) * 1.2
-            )
-        )
+    cars_list = [bmw3, bmw4, ford]
 
     garages_list = [Garage(town=random.choice(TOWNS), places=random.randint(1, 7))
                     for _ in range(3)]
@@ -139,7 +132,7 @@ if __name__ == '__main__':
     gara2.add(bmw)
     cesas = Cesar('Petro', garages_list)
     cesas2 = Cesar('Vasia', garages_list2)
-    cesas3 = Cesar('Oleg', gara)
+    cesas3 = Cesar('Oleg', [gara])
 
     cr_gara_damps = JsonConverter.json_damps(gara)
     loads_gara_damps = JsonConverter.json_loads(cr_gara_damps)
@@ -157,6 +150,7 @@ if __name__ == '__main__':
     yaml_load_cesar = YamlConverter.yaml_load('yaml_damp_cesar')
     yaml_load_garage = YamlConverter.yaml_load('yaml_damp_garage')
     yaml_load_car = YamlConverter.yaml_load('yaml_damp_car')
+    print(yaml_load_cesar.hit_hat())
 
     picle_damp_cesar = PicleConverter.picle_damp('picle_damp_cesar', cesas)
     picle_load_cesar = PicleConverter.picle_load('picle_damp_cesar')

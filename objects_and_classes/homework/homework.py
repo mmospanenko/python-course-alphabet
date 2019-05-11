@@ -52,6 +52,7 @@ from .constants import CARS_TYPES, CARS_PRODUCER, TOWNS
 import uuid
 import random
 from ruamel.yaml import YAML, yaml_object
+import ruamel.yaml
 CT = Union[float, str, str, type(uuid.uuid4), float]
 yaml = YAML()
 
@@ -61,10 +62,10 @@ class Cesar:
     yaml_tag = u'!cesar'
     garages: List[Garage]
 
-    def __init__(self, name: str, garages=0, register_id=uuid.uuid4()):
+    def __init__(self, name: str, garages=0):
         self.name = name
         self.garages = garages if garages else []
-        self.register_id = register_id
+        self.register_id = uuid.uuid4()
 
     def __repr__(self):
         return f'Cesar {self.name} have {self.garages} and hes register id '\
@@ -115,20 +116,23 @@ class Cesar:
 
     @classmethod
     def from_yaml(cls, constructor, node):
-        items = constructor.construct_pairs(node)
-        values = [value[1] for value in items]
-        return cls(*values)
+        value = ruamel.yaml.constructor.SafeConstructor.construct_mapping(
+            constructor, node, deep=True
+        )
+        instance = cls(name=value['name'], garages=value['garages'])
+        instance.register_id = value['register_id']
+        return instance
 
 
 @yaml_object(yaml)
 class Car:
     yaml_tag = u'!car'
 
-    def __init__(self, price: float, type_car, producer, mileage: float, number=uuid.uuid4()):
+    def __init__(self, price: float, type_car, producer, mileage: float):
         self.price = price
         self.type_car = type_car if type_car in CARS_TYPES else []
         self.producer = producer if producer in CARS_PRODUCER else []
-        self.number = number
+        self.number = uuid.uuid4()
         self.mileage = mileage
         assert self.type_car, f'Bad type car {type_car}. '\
             f'Select type from list {CARS_TYPES}'
@@ -177,8 +181,15 @@ class Car:
     @classmethod
     def from_yaml(cls, constructor, node):
         items = constructor.construct_pairs(node)
-        values = [value[1] for value in items]
-        return cls(*values)
+        value = {key: value for key, value in items}
+        instance = cls(
+            price=value['price'],
+            type_car=value['type_car'],
+            producer=value['producer'],
+            mileage=value['mileage']
+        )
+        instance.number = value['number']
+        return instance
 
 
 @yaml_object(yaml)
@@ -234,8 +245,14 @@ class Garage:
     @classmethod
     def from_yaml(cls, constructor, node):
         items = constructor.construct_pairs(node)
-        values = [value[1] for value in items]
-        return cls(*values)
+        value = {key: value for key, value in items}
+        instance = Garage(
+            town=value['town'],
+            places=value['places'],
+            cars=value['cars'],
+            owner=value['owner']
+        )
+        return instance
 
 
 if __name__ == '__main__':
