@@ -1,13 +1,14 @@
 from __future__ import annotations
-import pickle
-from json_utils import JsonEncoder, json_hook
-import json
-from typing import Union, List
-from objects_and_classes.homework.homework import Cesar, Car, Garage
-from objects_and_classes.homework.constants import CARS_TYPES, CARS_PRODUCER, TOWNS
-import random
-import uuid
 from ruamel.yaml import YAML, yaml_object
+import uuid
+import random
+from objects_and_classes.homework.constants import CARS_TYPES, CARS_PRODUCER,\
+    TOWNS
+from objects_and_classes.homework.homework import Cesar, Car, Garage
+from typing import Union, List
+import json
+from json_utils import JsonEncoder, json_hook
+import pickle
 """
 Для попереднього домашнього завдання.
 Для класу Колекціонер Машина і Гараж написати методи, які створюють інстанс обєкту
@@ -74,24 +75,24 @@ class YamlConverter:
 class PicleConverter:
 
     @staticmethod
-    def picle_damp(file_name, data):
-        file_picle = '{}.txt'.format(file_name)
-        with open(file_picle, "wb") as file:
+    def pickle_damp(file_name, data):
+        file_pickle = '{}.txt'.format(file_name)
+        with open(file_pickle, "wb") as file:
             pickle.dump(data, file)
 
     @staticmethod
-    def picle_load(file_name):
-        file_picle = '{}.txt'.format(file_name)
-        with open(file_picle, "rb") as file:
+    def pickle_load(file_name):
+        file_pickle = '{}.txt'.format(file_name)
+        with open(file_pickle, "rb") as file:
             load_file = pickle.load(file)
         return load_file
 
     @staticmethod
-    def picle_damps(obj):
+    def pickle_damps(obj):
         return pickle.dumps(obj)
 
     @staticmethod
-    def picle_loads(obj):
+    def pickle_loads(obj):
         return pickle.loads(obj)
 
 
@@ -114,9 +115,10 @@ if __name__ == '__main__':
 
     cars_list = [bmw3, bmw4, ford]
 
-    garages_list = [Garage(town=random.choice(TOWNS), places=random.randint(1, 7))
-                    for _ in range(3)]
-    garages_list2 = [Garage(town=random.choice(TOWNS), places=3) for _ in range(4)]
+    garages_list = [Garage(town=random.choice(TOWNS),
+                           places=random.randint(1, 7)) for _ in range(3)]
+    garages_list2 = [Garage(town=random.choice(TOWNS), places=3)
+                     for _ in range(4)]
 
     gara = Garage(town='Amsterdam', places=3)
     gara2 = Garage(town='Prague', places=3)
@@ -129,8 +131,7 @@ if __name__ == '__main__':
     cesas2 = Cesar('Vasia', garages_list2)
     cesas3 = Cesar('Oleg', [gara])
 
-    print('*' * 50)
-    print('JSON')
+    print('*' * 20, 'JSON', '*' * 20)
     cr_damp = JsonConverter.json_damps(bmw)
     print(type(cr_damp), cr_damp)
     bmw2 = JsonConverter.json_loads(cr_damp)
@@ -147,8 +148,7 @@ if __name__ == '__main__':
     print('loads_cesar', loads_cesar_damps.hit_hat())
     print(cesas.hit_hat())
 
-    print('*' * 50)
-    print('YAML')
+    print('*' * 20, 'YAML', '*' * 20)
     yaml_damp_car = YamlConverter.yaml_damp('yaml_damp_car', bmw)
     yaml_damp_garage = YamlConverter.yaml_damp('yaml_damp_garage', gara)
     yaml_damp_cesar = YamlConverter.yaml_damp('yaml_damp_cesar', cesas)
@@ -159,13 +159,12 @@ if __name__ == '__main__':
     print('yaml_load', yaml_load_cesar.hit_hat())
     print(cesas.hit_hat())
 
-    print('*' * 50)
-    print('PICLE')
-    picle_damp_cesar = PicleConverter.picle_damp('picle_damp_cesar', cesas)
-    picle_load_cesar = PicleConverter.picle_load('picle_damp_cesar')
+    print('*' * 20, 'PICKLE', '*' * 20)
+    pickle_damp_cesar = PicleConverter.pickle_damp('pickle_damp_cesar', cesas)
+    picle_load_cesar = PicleConverter.pickle_load('pickle_damp_cesar')
 
-    picle_damps_cesar = PicleConverter.picle_damps(cesas)
-    picle_loads_cesar = PicleConverter.picle_loads(picle_damps_cesar)
-    print('picle_loads', picle_loads_cesar.hit_hat())
-    print('picle_load', picle_load_cesar.hit_hat())
+    pickle_damps_cesar = PicleConverter.pickle_damps(cesas)
+    pickle_loads_cesar = PicleConverter.pickle_loads(pickle_damps_cesar)
+    print('pickle_loads', pickle_loads_cesar.hit_hat())
+    print('pickle_load', picle_load_cesar.hit_hat())
     print(cesas.hit_hat())

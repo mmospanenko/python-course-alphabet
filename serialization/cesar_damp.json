@@ -2,89 +2,89 @@
     "name": "Petro",
     "garages": [
         {
-            "town": "Berlin",
+            "town": "Prague",
             "cars": [
                 {
-                    "price": 101716.8,
+                    "price": 96966.0,
                     "type_car": "SUV",
-                    "producer": "BMW",
-                    "number": "e90eb2e2e8a6439fbe07ee4f9efdc2f1",
-                    "mileage": 31.2
+                    "producer": "Buick",
+                    "number": "71a58aa113314aadb21398e29fb58498",
+                    "mileage": 428.4
                 },
                 {
-                    "price": 2946.0,
-                    "type_car": "Luxury Car",
-                    "producer": "Chevrolet",
-                    "number": "9652cae49fd24edb8a2088d04329d865",
-                    "mileage": 92.39999999999999
+                    "price": 117807.59999999999,
+                    "type_car": "SUV",
+                    "producer": "Lamborghini",
+                    "number": "675ae54a3c2e46cfa8e502bc989066c0",
+                    "mileage": 891.6
                 },
                 {
                     "price": 25000.145,
                     "type_car": "Sedan",
                     "producer": "Ford",
-                    "number": "a9490f377ed942e99d46a3dc3733a9d2",
+                    "number": "28f9ab1d745945ab917d2ae61b1e3b9c",
                     "mileage": 1
                 }
             ],
-            "places": 1,
+            "places": 3,
             "owner": null
         },
         {
             "town": "Amsterdam",
             "cars": [
                 {
-                    "price": 101716.8,
+                    "price": 96966.0,
                     "type_car": "SUV",
-                    "producer": "BMW",
-                    "number": "e90eb2e2e8a6439fbe07ee4f9efdc2f1",
-                    "mileage": 31.2
+                    "producer": "Buick",
+                    "number": "71a58aa113314aadb21398e29fb58498",
+                    "mileage": 428.4
                 },
                 {
-                    "price": 2946.0,
-                    "type_car": "Luxury Car",
-                    "producer": "Chevrolet",
-                    "number": "9652cae49fd24edb8a2088d04329d865",
-                    "mileage": 92.39999999999999
+                    "price": 117807.59999999999,
+                    "type_car": "SUV",
+                    "producer": "Lamborghini",
+                    "number": "675ae54a3c2e46cfa8e502bc989066c0",
+                    "mileage": 891.6
                 },
                 {
                     "price": 25000.145,
                     "type_car": "Sedan",
                     "producer": "Ford",
-                    "number": "a9490f377ed942e99d46a3dc3733a9d2",
+                    "number": "28f9ab1d745945ab917d2ae61b1e3b9c",
                     "mileage": 1
                 }
             ],
-            "places": 5,
+            "places": 7,
             "owner": null
         },
         {
-            "town": "London",
+            "town": "Rome",
             "cars": [
                 {
-                    "price": 101716.8,
+                    "price": 96966.0,
                     "type_car": "SUV",
-                    "producer": "BMW",
-                    "number": "e90eb2e2e8a6439fbe07ee4f9efdc2f1",
-                    "mileage": 31.2
+                    "producer": "Buick",
+                    "number": "71a58aa113314aadb21398e29fb58498",
+                    "mileage": 428.4
                 },
                 {
-                    "price": 2946.0,
-                    "type_car": "Luxury Car",
-                    "producer": "Chevrolet",
-                    "number": "9652cae49fd24edb8a2088d04329d865",
-                    "mileage": 92.39999999999999
+                    "price": 117807.59999999999,
+                    "type_car": "SUV",
+                    "producer": "Lamborghini",
+                    "number": "675ae54a3c2e46cfa8e502bc989066c0",
+                    "mileage": 891.6
                 },
                 {
                     "price": 25000.145,
                     "type_car": "Sedan",
                     "producer": "Ford",
-                    "number": "a9490f377ed942e99d46a3dc3733a9d2",
+                    "number": "28f9ab1d745945ab917d2ae61b1e3b9c",
                     "mileage": 1
                 }
             ],
-            "places": 6,
+            "places": 7,
             "owner": null
         }
     ],
-    "register_id": "ff235e3ca96244d6ae8a0444323caaba"
+    "register_id": "210f66f41457422fb28394b82f9795a5"
 }

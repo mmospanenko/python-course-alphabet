@@ -2,22 +2,22 @@
 town: Amsterdam
 cars:
         - !car
-          price: 101716.8
+          price: 96966.0
           type_car: SUV
-          producer: BMW
-          number: e90eb2e2-e8a6-439f-be07-ee4f9efdc2f1
-          mileage: 31.2
+          producer: Buick
+          number: 71a58aa1-1331-4aad-b213-98e29fb58498
+          mileage: 428.4
         - !car
-          price: 2946.0
-          type_car: Luxury Car
-          producer: Chevrolet
-          number: 9652cae4-9fd2-4edb-8a20-88d04329d865
-          mileage: 92.39999999999999
+          price: 117807.59999999999
+          type_car: SUV
+          producer: Lamborghini
+          number: 675ae54a-3c2e-46cf-a8e5-02bc989066c0
+          mileage: 891.6
         - !car
           price: 25000.145
           type_car: Sedan
           producer: Ford
-          number: a9490f37-7ed9-42e9-9d46-a3dc3733a9d2
+          number: 28f9ab1d-7459-45ab-917d-2ae61b1e3b9c
           mileage: 1
 places: 3
 owner:
