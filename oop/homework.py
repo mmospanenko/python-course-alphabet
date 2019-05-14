@@ -24,9 +24,12 @@ class Cat:
     * Implement method run it receives hours value
       Calculate run km per hours remember that you have average_speed value
       Than if your cat run more or eq than 25 _reduce_saturation_level with value 2
-      if it runs between 25(not including) and 50(including) than _reduce_saturation_level with value 5
-      if it runs between 50(not including) and 100(including) than _reduce_saturation_level with value 15
-      if it runs between 100(not including) and 200(including) than _reduce_saturation_level with value 25
+      if it runs between 25(not including) and 50(including) than _reduce_saturation_level
+      with value 5
+      if it runs between 50(not including) and 100(including) than _reduce_saturation_level
+      with value 15
+      if it runs between 100(not including) and 200(including) than _reduce_saturation_level
+      with value 25
       if it runs more than 200(not including) than _reduce_saturation_level with value 50
 
       return text like this: f"Your cat ran {ran_km} kilometers"
@@ -38,29 +41,59 @@ class Cat:
 
     """
 
-    def __init__(self, age):
-        pass
+    def __init__(self, age: int):
+        self.age = age
+        self.average_speed = self._set_average_speed
+        self.saturation_level = 50
 
     def eat(self, product):
-        pass
+        if product == 'fodder':
+            self._increase_saturation_level(10)
+        if product == 'apple':
+            self._increase_saturation_level(5)
+        if product == 'milk':
+            self._increase_saturation_level(2)
 
     def _reduce_saturation_level(self, value):
-        pass
+        self.saturation_level = self.saturation_level - value
+        if self.saturation_level < 0:
+            return 0
 
     def _increase_saturation_level(self, value):
-        pass
+        self.saturation_level = self.saturation_level + value
+        if self.saturation_level > 100:
+            return 100
 
+    @property
     def _set_average_speed(self):
-        pass
+        if self.age <= 7:
+            return 12
+        if 7 < self.age <= 10:
+            return 9
+        if self.age > 10:
+            return 6
 
     def run(self, hours):
-        pass
+        av_hours = self._set_average_speed * hours
+        if av_hours <= 25:
+            self._reduce_saturation_level(2)
+        if 25 < av_hours <= 50:
+            self._reduce_saturation_level(5)
+        if 50 < av_hours <= 100:
+            self._reduce_saturation_level(15)
+        if 100 < av_hours <= 200:
+            self._reduce_saturation_level(25)
+        if av_hours > 200:
+            self._reduce_saturation_level(50)
+        return f"Your cat ran {av_hours} kilometers"
 
     def get_saturation_level(self):
-        pass
+        if self.saturation_level == 0:
+            return "Your cat is died :("
+        return self.saturation_level
 
     def get_average_speed(self):
-        pass
+        return self.average_speed
 
 
 class Cheetah:
