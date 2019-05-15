@@ -96,7 +96,7 @@ class Cat:
         return self.average_speed
 
 
-class Cheetah:
+class Cheetah(Cat):
     """
     * Inherit from class Cat
 
@@ -110,6 +110,23 @@ class Cheetah:
       if age grosser 15(not including) return 40
 
     """
+    def __init__(self, age):
+        super().__init__(age)
+
+    def eat(self, product):
+        if product == 'gazelle':
+            self._increase_saturation_level(30)
+        if product == 'rabbit':
+            self._increase_saturation_level(15)
+
+    @property
+    def _set_average_speed(self):
+        if self.age <= 5:
+            return 90
+        if 5 < self.age <= 15:
+            return 75
+        if self.age > 15:
+            return 40
 
 
 class Wall:
@@ -128,13 +145,14 @@ class Wall:
     """
 
     def __init__(self, width, height):
-        pass
+        self.width = width
+        self.height = height
 
     def wall_square(self):
-        pass
+        return self.width * self.height
 
     def number_of_rolls_of_wallpaper(self, roll_width_m, roll_length_m):
-        pass
+        import ipdb; ipdb.set_trace()
 
 
 class Roof:
