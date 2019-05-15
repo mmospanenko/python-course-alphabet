@@ -1,14 +1,17 @@
 from __future__ import annotations
 from ruamel.yaml import YAML, yaml_object
 import uuid
+from uuid import UUID
 import random
-from objects_and_classes.homework.constants import CARS_TYPES, CARS_PRODUCER,\
-    TOWNS
-from objects_and_classes.homework.homework import Cesar, Car, Garage
+from objects_and_classes.homework.constants import CARS_TYPES, CARS_PRODUCER, TOWNS
 from typing import Union, List
 import json
-from json_utils import JsonEncoder, json_hook
 import pickle
+import inspect
+from ruamel.yaml import YAML, yaml_object
+import ruamel.yaml
+CT = Union[float, str, str, type(uuid.uuid4), float]
+yaml = YAML()
 """
 Для попереднього домашнього завдання.
 Для класу Колекціонер Машина і Гараж написати методи, які створюють інстанс обєкту
@@ -28,6 +31,261 @@ Advanced
 Добавити опрацьовку формату ini
 
 """
+
+
+class JsonEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, complex):
+            return [obj.real, obj.imag]
+        if isinstance(obj, set):
+            return list(obj)
+        if isinstance(obj, UUID):
+            return obj.hex
+        if hasattr(obj, '__dict__'):
+            return obj.__dict__
+        return json.JSONEncoder.default(self, obj)
+
+
+def object_comparison(obj, class_obj):
+    assert isinstance(obj, dict), 'Obj mast be dict'
+    keys_obj = list(filter(lambda key: key, obj.keys()))
+    key_class = list(
+        filter(lambda key: key, inspect.signature(class_obj).parameters.keys())
+    )
+    inspect_arg = list(map(lambda cl_key: cl_key in keys_obj, key_class))
+    return inspect_arg
+
+
+def json_hook(obj):
+    if 'set' in obj:
+        return set(obj)
+    car_args = object_comparison(obj, Car)
+    cesar_args = object_comparison(obj, Cesar)
+    garage_args = object_comparison(obj, Garage)
+    if all(car_args):
+        create_car = Car(
+            price=obj['price'],
+            type_car=obj['type_car'],
+            producer=obj['producer'],
+            mileage=obj['mileage']
+        )
+        create_car.number = obj['number']
+        return create_car
+    if all(garage_args):
+        create_garage = Garage(
+            town=obj['town'],
+            places=obj['places'],
+            cars=obj['cars'],
+            owner=obj['owner']
+        )
+        return create_garage
+    if all(cesar_args):
+        create_cesar = Cesar(name=obj['name'], garages=obj['garages'])
+        create_cesar.register_id = obj['register_id']
+        return create_cesar
+
+    return obj
+
+
+@yaml_object(yaml)
+class Cesar:
+    yaml_tag = u'!cesar'
+    garages: List[Garage]
+
+    def __init__(self, name: str, garages=0):
+        self.name = name
+        self.garages = garages if garages else []
+        self.register_id = uuid.uuid4()
+
+    def __repr__(self):
+        return f'Cesar {self.name} have {self.garages} and hes register id '\
+            f'{self.register_id}'
+
+    def hit_hat(self):
+        return sum(map(lambda garage: garage.hit_hat(), self.garages))
+
+    def garages_count(self):
+        return len(self.garages)
+
+    def cars_count(self):
+        return sum(map(lambda garage: len(garage.cars), self.garages))
+
+    def add_car(self, car, garage=None):
+
+        if garage:
+            return garage.add(car)
+
+        # count is free counts cars in garage, free_garage is object garage
+        count, free_garage = max(
+            [(item.places - len(item.cars), item) for item in self.garages]
+        )
+        if not count:
+            print(f'Sorry all the places are taken')
+            return
+        return free_garage.add(car)
+
+    def __lt__(self, other):
+        return self.hit_hat() < other.hit_hat()
+
+    def __gt__(self, other):
+        return self.hit_hat() > other.hit_hat()
+
+    def __eq__(self, other):
+        return self.hit_hat() == other.hit_hat()
+
+    def __ge__(self, other):
+        return self.hit_hat() >= other.hit_hat()
+
+    def __le__(self, other):
+        return self.hit_hat() <= other.hit_hat()
+
+    @classmethod
+    def to_yaml(cls, representer, node):
+        node.__dict__['register_id'] = str(node.__dict__['register_id'])
+        return representer.represent_mapping(cls.yaml_tag, node.__dict__)
+
+    @classmethod
+    def from_yaml(cls, constructor, node):
+        value = ruamel.yaml.constructor.SafeConstructor.construct_mapping(
+            constructor, node, deep=True
+        )
+        instance = cls(name=value['name'], garages=value['garages'])
+        instance.register_id = value['register_id']
+        return instance
+
+
+@yaml_object(yaml)
+class Car:
+    yaml_tag = u'!car'
+
+    def __init__(self, price: float, type_car, producer, mileage: float):
+        self.price = price
+        self.type_car = type_car if type_car in CARS_TYPES else []
+        self.producer = producer if producer in CARS_PRODUCER else []
+        self.number = uuid.uuid4()
+        self.mileage = mileage
+        assert self.type_car, f'Bad type car {type_car}. '\
+            f'Select type from list {CARS_TYPES}'
+        assert self.producer, f'Bad producer {producer}. '\
+            f'Select producer from list {CARS_TYPES}'
+
+    def __str__(self):
+        return f'Specification for the car next: \n Price {self.price} \
+        \n Type {self.type_car} \
+        \n Producer {self.producer} \n Number {self.number} \
+        \n Mileage {self.mileage}'
+
+    def __repr__(self):
+        return f'Car(price={self.price}, type={self.type_car}, ' \
+            f'producer={self.producer}, number={self.number}, '\
+            f'mileage={self.mileage})'
+
+    def __float__(self):
+        return float(self.mileage), float(self.price)
+
+    def __lt__(self, other: Car):
+        return self.price < other.price
+
+    def __gt__(self, other: Car):
+        return self.price > other.price
+
+    def __eq__(self, other: Car):
+        return self.price == other.price
+
+    def __le__(self, other: Car):
+        return self.price <= other.price
+
+    def __ge__(self, other: Car):
+        return self.price >= other.price
+
+    @property
+    def new_number(self):
+        self.number = uuid.uuid4()
+        return self.number
+
+    @classmethod
+    def to_yaml(cls, representer, node):
+        node.__dict__['number'] = str(node.__dict__['number'])
+        return representer.represent_mapping(cls.yaml_tag, node.__dict__)
+
+    @classmethod
+    def from_yaml(cls, constructor, node):
+        value = ruamel.yaml.constructor.SafeConstructor.construct_mapping(
+            constructor, node, deep=True
+        )
+        instance = cls(
+            price=value['price'],
+            type_car=value['type_car'],
+            producer=value['producer'],
+            mileage=value['mileage']
+        )
+        instance.number = value['number']
+        return instance
+
+
+@yaml_object(yaml)
+class Garage:
+    yaml_tag = u'!garage'
+    owner: uuid.UUID
+
+    def __init__(self, town, cars=[], places=int, owner=None):
+        self.town = town if town in TOWNS else []
+        self.cars = cars
+        self.places = places
+        self.owner = owner
+        assert self.town, f'Select towns from list {TOWNS}'
+
+    def __repr__(self):
+        return f'Garage: Town {self.town}, Cars {self.cars},' \
+            f'Places {self.places}, Owner {self.owner}'
+
+    def add(self, car):
+        car_in_garage = list(
+            filter(lambda c: c.number == car.number, self.cars)
+        )
+        if not car_in_garage and len(self.cars) < self.places:
+            print(f'Car {car.producer} is added to garage {self.town}')
+            self.cars.append(car)
+            return self.cars
+
+        if car_in_garage:
+            print(f'The car {car.producer} is already in the garage '
+                  f'{self.town}')
+            return
+        print(f'Sorry garage count is full (places={self.places}, '
+              f'count={len(self.cars)})')
+        return
+
+    def remove(self, car):
+        if self.cars:
+            return self.cars.remove(car)
+
+    def hit_hat(self):
+        return sum(map(lambda car: car.price, self.cars))
+
+    def __lt__(self, other):
+        return self.cars < other.cars
+
+    def __gt__(self, other):
+        return self.cars > other.cars
+
+    @classmethod
+    def to_yaml(cls, representer, node):
+        return representer.represent_mapping(cls.yaml_tag, node.__dict__)
+
+    @classmethod
+    def from_yaml(cls, constructor, node):
+        value = ruamel.yaml.constructor.SafeConstructor.construct_mapping(
+            constructor, node, deep=True
+        )
+        instance = Garage(
+            town=value['town'],
+            places=value['places'],
+            cars=value['cars'],
+            owner=value['owner']
+        )
+        return instance
+
 
 
 class JsonConverter:
