@@ -1,7 +1,7 @@
 import json
+import inspect
 from uuid import UUID
 from objects_and_classes.homework.homework import Cesar, Car, Garage
-import inspect
 
 
 class JsonEncoder(json.JSONEncoder):
@@ -33,6 +33,7 @@ def json_hook(obj):
     car_args = object_comparison(obj, Car)
     cesar_args = object_comparison(obj, Cesar)
     garage_args = object_comparison(obj, Garage)
+
     if all(car_args):
         create_car = Car(
             price=obj['price'],
@@ -42,6 +43,7 @@ def json_hook(obj):
         )
         create_car.number = obj['number']
         return create_car
+
     if all(garage_args):
         create_garage = Garage(
             town=obj['town'],
@@ -50,6 +52,7 @@ def json_hook(obj):
             owner=obj['owner']
         )
         return create_garage
+
     if all(cesar_args):
         create_cesar = Cesar(name=obj['name'], garages=obj['garages'])
         create_cesar.register_id = obj['register_id']

@@ -1,22 +1,20 @@
 from __future__ import annotations
 
-from ruamel.yaml import YAML
 import uuid
 import random
-
-from objects_and_classes.homework.constants import CARS_TYPES, CARS_PRODUCER,\
-    TOWNS
-from json_utils import JsonEncoder, json_hook
-
-from typing import Union, List
 import json
 import pickle
-import inspect
-from ruamel.yaml import YAML, yaml_object
 import ruamel.yaml
+from ruamel.yaml import YAML, yaml_object
+from typing import Union, List
+from json_utils import JsonEncoder, json_hook
+from objects_and_classes.homework.constants import CARS_TYPES, CARS_PRODUCER,\
+    TOWNS
 
 CT = Union[float, str, str, type(uuid.uuid4), float]
 yaml = YAML()
+
+
 """
 Для попереднього домашнього завдання.
 Для класу Колекціонер Машина і Гараж написати методи, які створюють інстанс
