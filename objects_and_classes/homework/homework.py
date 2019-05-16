@@ -47,19 +47,22 @@
     Колекціонерів можна порівнювати за ціною всіх їх автомобілів.
 """
 from __future__ import annotations
-from typing import Union, List
+
 from .constants import CARS_TYPES, CARS_PRODUCER, TOWNS
+
+from typing import Union, List
 import uuid
 import random
 from ruamel.yaml import YAML, yaml_object
 import ruamel.yaml
+
 CT = Union[float, str, str, type(uuid.uuid4), float]
 yaml = YAML()
 
 
 @yaml_object(yaml)
 class Cesar:
-    yaml_tag = u'!cesar'
+    yaml_tag = '!cesar'
     garages: List[Garage]
 
     def __init__(self, name: str, garages=0):
@@ -126,7 +129,7 @@ class Cesar:
 
 @yaml_object(yaml)
 class Car:
-    yaml_tag = u'!car'
+    yaml_tag = '!car'
 
     def __init__(self, price: float, type_car, producer, mileage: float):
         self.price = price
@@ -139,19 +142,10 @@ class Car:
         assert self.producer, f'Bad producer {producer}. '\
             f'Select producer from list {CARS_TYPES}'
 
-    def __str__(self):
-        return f'Specification for the car next: \n Price {self.price} \
-        \n Type {self.type_car} \
-        \n Producer {self.producer} \n Number {self.number} \
-        \n Mileage {self.mileage}'
-
     def __repr__(self):
         return f'Car(price={self.price}, type={self.type_car}, ' \
             f'producer={self.producer}, number={self.number}, '\
             f'mileage={self.mileage})'
-
-    def __float__(self):
-        return float(self.mileage), float(self.price)
 
     def __lt__(self, other: Car):
         return self.price < other.price
@@ -195,10 +189,10 @@ class Car:
 
 @yaml_object(yaml)
 class Garage:
-    yaml_tag = u'!garage'
+    yaml_tag = '!garage'
     owner: uuid.UUID
 
-    def __init__(self, town, cars=[], places=int, owner=None):
+    def __init__(self, town, places: int, cars=[], owner=None):
         self.town = town if town in TOWNS else []
         self.cars = cars
         self.places = places

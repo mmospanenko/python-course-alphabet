@@ -1,31 +1,39 @@
 from __future__ import annotations
-from ruamel.yaml import YAML, yaml_object
+
+from ruamel.yaml import YAML
 import uuid
-from uuid import UUID
 import random
-from objects_and_classes.homework.constants import CARS_TYPES, CARS_PRODUCER, TOWNS
+
+from objects_and_classes.homework.constants import CARS_TYPES, CARS_PRODUCER,\
+    TOWNS
+from json_utils import JsonEncoder, json_hook
+
 from typing import Union, List
 import json
 import pickle
 import inspect
 from ruamel.yaml import YAML, yaml_object
 import ruamel.yaml
+
 CT = Union[float, str, str, type(uuid.uuid4), float]
 yaml = YAML()
 """
 Для попереднього домашнього завдання.
-Для класу Колекціонер Машина і Гараж написати методи, які створюють інстанс обєкту
+Для класу Колекціонер Машина і Гараж написати методи, які створюють інстанс
+обєкту
 з (yaml, json, pickle) файлу відповідно
 
-Для класів Колекціонер Машина і Гараж написати методи, які зберігають стан обєкту в файли формату
+Для класів Колекціонер Машина і Гараж написати методи, які зберігають стан
+обєкту в файли формату
 yaml, json, pickle відповідно.
 
-Для класів Колекціонер Машина і Гараж написати методи, які конвертують обєкт в строку формату
+Для класів Колекціонер Машина і Гараж написати методи, які конвертують обєкт в
+строку формату
 yaml, json, pickle відповідно.
 
-Для класу Колекціонер Машина і Гараж написати методи, які створюють інстанс обєкту
+Для класу Колекціонер Машина і Гараж написати методи, які створюють інстанс
+обєкту
 з (yaml, json, pickle) строки відповідно
-
 
 Advanced
 Добавити опрацьовку формату ini
@@ -33,63 +41,9 @@ Advanced
 """
 
 
-class JsonEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, complex):
-            return [obj.real, obj.imag]
-        if isinstance(obj, set):
-            return list(obj)
-        if isinstance(obj, UUID):
-            return obj.hex
-        if hasattr(obj, '__dict__'):
-            return obj.__dict__
-        return json.JSONEncoder.default(self, obj)
-
-
-def object_comparison(obj, class_obj):
-    assert isinstance(obj, dict), 'Obj mast be dict'
-    keys_obj = list(filter(lambda key: key, obj.keys()))
-    key_class = list(
-        filter(lambda key: key, inspect.signature(class_obj).parameters.keys())
-    )
-    inspect_arg = list(map(lambda cl_key: cl_key in keys_obj, key_class))
-    return inspect_arg
-
-
-def json_hook(obj):
-    if 'set' in obj:
-        return set(obj)
-    car_args = object_comparison(obj, Car)
-    cesar_args = object_comparison(obj, Cesar)
-    garage_args = object_comparison(obj, Garage)
-    if all(car_args):
-        create_car = Car(
-            price=obj['price'],
-            type_car=obj['type_car'],
-            producer=obj['producer'],
-            mileage=obj['mileage']
-        )
-        create_car.number = obj['number']
-        return create_car
-    if all(garage_args):
-        create_garage = Garage(
-            town=obj['town'],
-            places=obj['places'],
-            cars=obj['cars'],
-            owner=obj['owner']
-        )
-        return create_garage
-    if all(cesar_args):
-        create_cesar = Cesar(name=obj['name'], garages=obj['garages'])
-        create_cesar.register_id = obj['register_id']
-        return create_cesar
-
-    return obj
-
-
 @yaml_object(yaml)
 class Cesar:
-    yaml_tag = u'!cesar'
+    yaml_tag = '!cesar'
     garages: List[Garage]
 
     def __init__(self, name: str, garages=0):
@@ -156,7 +110,7 @@ class Cesar:
 
 @yaml_object(yaml)
 class Car:
-    yaml_tag = u'!car'
+    yaml_tag = '!car'
 
     def __init__(self, price: float, type_car, producer, mileage: float):
         self.price = price
@@ -169,19 +123,10 @@ class Car:
         assert self.producer, f'Bad producer {producer}. '\
             f'Select producer from list {CARS_TYPES}'
 
-    def __str__(self):
-        return f'Specification for the car next: \n Price {self.price} \
-        \n Type {self.type_car} \
-        \n Producer {self.producer} \n Number {self.number} \
-        \n Mileage {self.mileage}'
-
     def __repr__(self):
         return f'Car(price={self.price}, type={self.type_car}, ' \
             f'producer={self.producer}, number={self.number}, '\
             f'mileage={self.mileage})'
-
-    def __float__(self):
-        return float(self.mileage), float(self.price)
 
     def __lt__(self, other: Car):
         return self.price < other.price
@@ -225,10 +170,10 @@ class Car:
 
 @yaml_object(yaml)
 class Garage:
-    yaml_tag = u'!garage'
+    yaml_tag = '!garage'
     owner: uuid.UUID
 
-    def __init__(self, town, cars=[], places=int, owner=None):
+    def __init__(self, town, places: int, cars=[], owner=None):
         self.town = town if town in TOWNS else []
         self.cars = cars
         self.places = places
@@ -287,7 +232,6 @@ class Garage:
         return instance
 
 
-
 class JsonConverter:
 
     @staticmethod
@@ -334,13 +278,13 @@ class PicleConverter:
 
     @staticmethod
     def pickle_damp(file_name, data):
-        file_pickle = '{}.txt'.format(file_name)
+        file_pickle = '{}.pickle'.format(file_name)
         with open(file_pickle, "wb") as file:
             pickle.dump(data, file)
 
     @staticmethod
     def pickle_load(file_name):
-        file_pickle = '{}.txt'.format(file_name)
+        file_pickle = '{}.pickle'.format(file_name)
         with open(file_pickle, "rb") as file:
             load_file = pickle.load(file)
         return load_file
