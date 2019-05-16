@@ -318,7 +318,7 @@ class House:
         self.__door = None
 
     def create_wall(self, width: int, height: int) -> list[Wall]:
-        if width <= 0 and height <= 0:
+        if not all([width, height]):
             raise ValueError('Value must be not 0')
         wall = Wall(width, height)
         if len(self.__walls) >= 4:
@@ -327,7 +327,7 @@ class House:
 
     def create_roof(
             self, width: int, height: int, roof_type: str) -> Roof:
-        if width <= 0 and height <= 0:
+        if not all([width, height]):
             raise ValueError('Value must be not 0')
         if not self.__roof:
             self.__roof = Roof(width, height, roof_type)
@@ -335,13 +335,13 @@ class House:
         raise ValueError("The house can not have two roofs")
 
     def create_window(self, width: int, height: int) -> list[Window]:
-        if width > 0 and height > 0:
+        if all([width, height]):
             window = Window(width, height)
             return self.__windows.append(window)
         raise ValueError('Value must be not 0')
 
     def create_door(self, width: int, height: int) -> Door:
-        if width <= 0 and height <= 0:
+        if not all([width, height]):
             raise ValueError('Value must be not 0')
         if self.__door is None:
             self.__door = Door(width, height)
@@ -376,7 +376,7 @@ class House:
         return self.__door.door_square
 
     def get_number_of_rolls_of_wallpapers(self, roll_width_m, roll_length_m):
-        if roll_width_m <= 0 and roll_length_m <= 0:
+        if not all([roll_width_m, roll_length_m]):
             raise ValueError('Sorry length must be not 0')
         return round(sum(list(map(
             lambda wall: wall.number_of_rolls_of_wallpaper(
