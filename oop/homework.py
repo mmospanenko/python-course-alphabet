@@ -341,7 +341,7 @@ class House:
         raise ValueError('Value must be not 0')
 
     def create_door(self, width: int, height: int) -> Door:
-        if (width and height) <= 0:
+        if width <= 0 and height <= 0:
             raise ValueError('Value must be not 0')
         if self.__door is None:
             self.__door = Door(width, height)
