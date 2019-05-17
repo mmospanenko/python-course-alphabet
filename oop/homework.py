@@ -1,4 +1,5 @@
 from __future__ import annotations
+from typing import List
 
 
 class Cat:
@@ -317,7 +318,7 @@ class House:
         self.__roof = None
         self.__door = None
 
-    def create_wall(self, width: int, height: int) -> list[Wall]:
+    def create_wall(self, width: int, height: int) -> List[Wall]:
         if not all([width, height]):
             raise ValueError('Value must be not 0')
         wall = Wall(width, height)
@@ -334,7 +335,7 @@ class House:
             return self.__roof
         raise ValueError("The house can not have two roofs")
 
-    def create_window(self, width: int, height: int) -> list[Window]:
+    def create_window(self, width: int, height: int) -> List[Window]:
         if all([width, height]):
             window = Window(width, height)
             return self.__windows.append(window)
