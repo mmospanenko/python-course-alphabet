@@ -343,9 +343,9 @@ class House:
     def create_door(self, width: int, height: int) -> Door:
         if not all([width, height]):
             raise ValueError('Value must be not 0')
-        if self.__door is None:
+        if not self.__door:
             self.__door = Door(width, height)
-            return
+            return self.__door
         raise ValueError('The house can not have two doors')
 
     def get_count_of_walls(self) -> int:
@@ -367,10 +367,10 @@ class House:
         return self.__roof.roof_square
 
     def get_walls_square(self) -> int:
-        return sum(list(map(lambda wall: wall.wall_square, self.__walls)))
+        return sum([wall.wall_square for wall in self.__walls])
 
     def get_windows_square(self) -> int:
-        return sum(list(map(lambda wind: wind.window_square, self.__windows)))
+        return sum([window.window_square for window in self.__windows])
 
     def get_door_square(self) -> int:
         return self.__door.door_square
@@ -378,9 +378,8 @@ class House:
     def get_number_of_rolls_of_wallpapers(self, roll_width_m, roll_length_m):
         if not all([roll_width_m, roll_length_m]):
             raise ValueError('Sorry length must be not 0')
-        return round(sum(list(map(
-            lambda wall: wall.number_of_rolls_of_wallpaper(
-                roll_width_m, roll_length_m), self.__walls))))
+        add_rolls = [wall.number_of_rolls_of_wallpaper(roll_width_m, roll_length_m) for wall in self.__walls]
+        return round(sum(add_rolls))
 
     def get_room_square(self):
         walls_square = self.get_walls_square()
