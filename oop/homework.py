@@ -60,13 +60,13 @@ class Cat:
 
     def _reduce_saturation_level(self, value: int) -> int:
         self.saturation_level = self.saturation_level - value
-        if self.saturation_level < 0:
-            return 0
+        self.saturation_level = min([self.saturation_level],
+                                    key=lambda x: x >= 0)
 
     def _increase_saturation_level(self, value: int) -> int:
         self.saturation_level = self.saturation_level + value
-        if self.saturation_level > 100:
-            return 100
+        self.saturation_level = max([self.saturation_level],
+                                    key=lambda x: x >= 100)
 
     @property
     def _set_average_speed(self) -> int:
@@ -78,18 +78,18 @@ class Cat:
             return 6
 
     def run(self, hours: int) -> int:
-        av_hours = self._set_average_speed * hours
-        if av_hours <= 25:
+        distance = self._set_average_speed * hours
+        if distance <= 25:
             self._reduce_saturation_level(2)
-        if 25 < av_hours <= 50:
+        if 25 < distance <= 50:
             self._reduce_saturation_level(5)
-        if 50 < av_hours <= 100:
+        if 50 < distance <= 100:
             self._reduce_saturation_level(15)
-        if 100 < av_hours <= 200:
+        if 100 < distance <= 200:
             self._reduce_saturation_level(25)
-        if av_hours > 200:
+        if distance > 200:
             self._reduce_saturation_level(50)
-        return f"Your cat ran {av_hours} kilometers"
+        return f"Your cat ran {distance} kilometers"
 
     def get_saturation_level(self) -> int:
         if self.saturation_level == 0:
@@ -188,7 +188,7 @@ class Roof:
         elif self.roof_type == 'single-pitch':
             return self.width * self.height
         else:
-            raise ValueError('Sorry there is only two types of roofs')
+            raise ValueError('Sorry you must select gable or single-pitch')
 
 
 class Window:
@@ -245,7 +245,9 @@ class Door:
         elif value == 'metal':
             return self.door_square * self.metal_price
         else:
-            raise ValueError('Sorry we don\'t have such material')
+            massege = f'Sorry we don\'t have such material "{value}". '\
+                f'Select "wood" or "metal"'
+            raise ValueError(massege)
 
     def update_wood_price(self, value: int) -> int:
         self.wood_price = value
@@ -326,8 +328,7 @@ class House:
             raise ValueError("Our house can not have more than 4 walls")
         return self.__walls.append(wall)
 
-    def create_roof(
-            self, width: int, height: int, roof_type: str) -> Roof:
+    def create_roof(self, width: int, height: int, roof_type: str) -> Roof:
         if not all([width, height]):
             raise ValueError('Value must be not 0')
         if not self.__roof:
