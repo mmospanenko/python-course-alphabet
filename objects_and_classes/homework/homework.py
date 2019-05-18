@@ -140,7 +140,7 @@ class Car:
         assert self.type_car, f'Bad type car {type_car}. '\
             f'Select type from list {CARS_TYPES}'
         assert self.producer, f'Bad producer {producer}. '\
-            f'Select producer from list {CARS_TYPES}'
+            f'Select producer from list {CARS_PRODUCER}'
 
     def __repr__(self):
         return f'Car(price={self.price}, type={self.type_car}, ' \
