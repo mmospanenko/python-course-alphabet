@@ -47,14 +47,22 @@
     Колекціонерів можна порівнювати за ціною всіх їх автомобілів.
 """
 from __future__ import annotations
-from typing import Union, List
+
 from .constants import CARS_TYPES, CARS_PRODUCER, TOWNS
+
+from typing import Union, List
 import uuid
 import random
+from ruamel.yaml import YAML, yaml_object
+import ruamel.yaml
+
 CT = Union[float, str, str, type(uuid.uuid4), float]
+yaml = YAML()
 
 
+@yaml_object(yaml)
 class Cesar:
+    yaml_tag = '!cesar'
     garages: List[Garage]
 
     def __init__(self, name: str, garages=0):
@@ -104,8 +112,24 @@ class Cesar:
     def __le__(self, other):
         return self.hit_hat() <= other.hit_hat()
 
+    @classmethod
+    def to_yaml(cls, representer, node):
+        node.__dict__['register_id'] = str(node.__dict__['register_id'])
+        return representer.represent_mapping(cls.yaml_tag, node.__dict__)
 
+    @classmethod
+    def from_yaml(cls, constructor, node):
+        value = ruamel.yaml.constructor.SafeConstructor.construct_mapping(
+            constructor, node, deep=True
+        )
+        instance = cls(name=value['name'], garages=value['garages'])
+        instance.register_id = value['register_id']
+        return instance
+
+
+@yaml_object(yaml)
 class Car:
+    yaml_tag = '!car'
 
     def __init__(self, price: float, type_car, producer, mileage: float):
         self.price = price
@@ -116,21 +140,12 @@ class Car:
         assert self.type_car, f'Bad type car {type_car}. '\
             f'Select type from list {CARS_TYPES}'
         assert self.producer, f'Bad producer {producer}. '\
-            f'Select producer from list {CARS_TYPES}'
-
-    def __str__(self):
-        return f'Specification for the car next: \n Price {self.price} \
-        \n Type {self.type_car} \
-        \n Producer {self.producer} \n Number {self.number} \
-        \n Mileage {self.mileage}'
+            f'Select producer from list {CARS_PRODUCER}'
 
     def __repr__(self):
         return f'Car(price={self.price}, type={self.type_car}, ' \
             f'producer={self.producer}, number={self.number}, '\
             f'mileage={self.mileage})'
-
-    def __float__(self):
-        return float(self.mileage), float(self.price)
 
     def __lt__(self, other: Car):
         return self.price < other.price
@@ -152,8 +167,29 @@ class Car:
         self.number = uuid.uuid4()
         return self.number
 
+    @classmethod
+    def to_yaml(cls, representer, node):
+        node.__dict__['number'] = str(node.__dict__['number'])
+        return representer.represent_mapping(cls.yaml_tag, node.__dict__)
 
+    @classmethod
+    def from_yaml(cls, constructor, node):
+        value = ruamel.yaml.constructor.SafeConstructor.construct_mapping(
+            constructor, node, deep=True
+        )
+        instance = cls(
+            price=value['price'],
+            type_car=value['type_car'],
+            producer=value['producer'],
+            mileage=value['mileage']
+        )
+        instance.number = value['number']
+        return instance
+
+
+@yaml_object(yaml)
 class Garage:
+    yaml_tag = '!garage'
     owner: uuid.UUID
 
     def __init__(self, town, places: int, cars=[], owner=None):
@@ -196,6 +232,23 @@ class Garage:
 
     def __gt__(self, other):
         return self.cars > other.cars
+
+    @classmethod
+    def to_yaml(cls, representer, node):
+        return representer.represent_mapping(cls.yaml_tag, node.__dict__)
+
+    @classmethod
+    def from_yaml(cls, constructor, node):
+        value = ruamel.yaml.constructor.SafeConstructor.construct_mapping(
+            constructor, node, deep=True
+        )
+        instance = Garage(
+            town=value['town'],
+            places=value['places'],
+            cars=value['cars'],
+            owner=value['owner']
+        )
+        return instance
 
 
 if __name__ == '__main__':
