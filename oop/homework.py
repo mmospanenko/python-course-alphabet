@@ -60,13 +60,11 @@ class Cat:
 
     def _reduce_saturation_level(self, value: int) -> int:
         self.saturation_level = self.saturation_level - value
-        self.saturation_level = min([self.saturation_level],
-                                    key=lambda x: x >= 0)
+        self.saturation_level = max(self.saturation_level, 0)
 
     def _increase_saturation_level(self, value: int) -> int:
         self.saturation_level = self.saturation_level + value
-        self.saturation_level = max([self.saturation_level],
-                                    key=lambda x: x >= 100)
+        self.saturation_level = min(self.saturation_level, 100)
 
     @property
     def _set_average_speed(self) -> int:
