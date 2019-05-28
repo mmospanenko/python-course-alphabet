@@ -7,7 +7,7 @@
     <div class="card mb-3" style="max-width: 540px;">
       <div class="row no-gutters">
         {% for item in movies %}
-          {% if item.get('year') | int > 2010 %}
+          {% if item.get('year') | int > default_year %}
           <div class="col-lg-4">
             <a href="/{{ item.get('title') }}">
               <img
