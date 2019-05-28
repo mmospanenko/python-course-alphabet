@@ -7,7 +7,7 @@ PRJ_DIR = os.path.dirname(os.path.abspath(__file__))
 DUMP = os.path.join(PRJ_DIR, 'movies.json')
 
 app = Flask(__name__)
-default_year = 2010
+initial_year = 2010
 
 
 with open(DUMP) as f:
@@ -25,7 +25,7 @@ def movies_page():
         'movies.html',
         title='Movies list',
         movies=MOVIES,
-        default_year=default_year
+        initial_year=initial_year
     )
 
 
@@ -38,7 +38,7 @@ def movie_page(title):
         'movies.html',
         title='Movies list',
         movies=MOVIES,
-        default_year=default_year
+        initial_year=initial_year
     )
 
 
