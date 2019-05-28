@@ -1,17 +1,21 @@
 import json
+import os
 
 from flask import Flask, render_template
+
+PRJ_DIR = os.path.dirname(os.path.abspath(__file__))
+DUMP = os.path.join(PRJ_DIR, 'movies.json')
 
 app = Flask(__name__)
 
 
-with open('movies.json') as f:
+with open(DUMP) as f:
     MOVIES = json.load(f)
 
 
 @app.route('/')
 def home_page():
-    return render_template('home.html', title='Home')
+    return render_template('home.html', title='Home', author='Alex Smith')
 
 
 @app.route('/movies')
