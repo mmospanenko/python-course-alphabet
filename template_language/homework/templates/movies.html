@@ -3,38 +3,40 @@
 {% block content %}
 <h1 class="my-5 py-5 text-center">{{ title }}</h1>
 <div class="row">
-  {% for item in movies %} 
+  {% for item in movies %}
   {% if item.get('year') | int >= initial_year %}
-    <div class="col-sm-6">
-      <div class="card mb-3" style="max-width: 540px;">
-        <div class="row no-gutters">
-          <div class="col-lg-4">
-            <a href="/{{ item.get('id') }}">
-              <img
-                src="{{ item.get('poster') }}"
-                class="card-img"
-                alt="{{ item.get('title') }}"
-              />
-            </a>
-          </div>
-          <div class="col-lg-8">
-            <div class="card-body">
-              <h5 class="card-title">
-                <a href="/{{ item.get('id') }}">{{ item.get('title') }}</a>
-              </h5>
-              <p class="card-text">
-                {{ item.get('plot') }}
-              </p>
-              <p class="card-text">
-                <small class="text-muted">{{ item.get('year') }},</small>
-                <small class="text-muted">{{ item.get('director') }}</small>
-              </p>
-            </div>
+  <div class="col-sm-6">
+    <div class="card mb-3" style="max-width: 540px;">
+      <div class="row no-gutters">
+        <div class="col-lg-4">
+          <a href="{{ url_for('movie_page', ids=item.id) }}">
+            <img
+              src="{{ item.get('poster') }}"
+              class="card-img"
+              alt="{{ item.get('title') }}"
+            />
+          </a>
+        </div>
+        <div class="col-lg-8">
+          <div class="card-body">
+            <h5 class="card-title">
+              <a href="{{ url_for('movie_page', ids=item.id) }}"
+                >{{ item.get('title') }}</a
+              >
+            </h5>
+            <p class="card-text">
+              {{ item.get('plot') }}
+            </p>
+            <p class="card-text">
+              <small class="text-muted">{{ item.get('year') }},</small>
+              <small class="text-muted">{{ item.get('director') }}</small>
+            </p>
           </div>
         </div>
       </div>
     </div>
-  {% endif %} 
+  </div>
+  {% endif %}
   {% endfor %}
 </div>
 {% endblock %}

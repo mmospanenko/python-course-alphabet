@@ -8,6 +8,7 @@ DUMP = os.path.join(PRJ_DIR, 'movies.json')
 
 app = Flask(__name__)
 initial_year = 2010
+author = 'Alex Smith'
 
 
 with open(DUMP) as f:
@@ -16,7 +17,7 @@ with open(DUMP) as f:
 
 @app.route('/')
 def home_page():
-    return render_template('home.html', title='Home', author='Alex Smith')
+    return render_template('home.html', title='Home', author=author)
 
 
 @app.route('/movies')
@@ -29,7 +30,7 @@ def movies_page():
     )
 
 
-@app.route('/<ids>')
+@app.route('/movie/<ids>')
 def movie_page(ids):
     for i, movie in enumerate(MOVIES):
         if MOVIES[i].get('id') == ids:
