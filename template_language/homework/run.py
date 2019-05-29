@@ -29,10 +29,11 @@ def movies_page():
     )
 
 
-@app.route('/<title>')
-def movie_page(title):
+@app.route('/<ids>')
+def movie_page(ids):
     for i, movie in enumerate(MOVIES):
-        if MOVIES[i].get('title') == title:
+        if MOVIES[i].get('id') == ids:
+            title = MOVIES[i].get('title')
             return render_template('movie.html', title=title, movie=MOVIES[i])
     return render_template(
         'movies.html',
