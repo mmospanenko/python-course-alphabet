@@ -1,5 +1,5 @@
-{% extends "base.html" %}
-{% block title %}Home{% endblock %}
+{% extends "base.html" %} 
+{% block title %}Home{% endblock %} 
 {% block content %}
 
 <main role="main" class="inner cover my-auto text-center">
@@ -10,7 +10,9 @@
     <a href="{{ url_for('fruits.fruits') }}" class="btn btn-lg btn-primary"
       >FRUITS</a
     >
-    <a href="{{ url_for('vegetables.vegetables')}}" class="btn btn-lg btn-primary"
+    <a
+      href="{{ url_for('vegetables.vegetables')}}"
+      class="btn btn-lg btn-primary"
       >VEGETABLE</a
     >
   </p>

@@ -1,46 +1,62 @@
-{% extends "base.html" %}
-{% block title %}{{title}}{% endblock %}
+{% extends "base.html" %} 
+{% block title %}{{title}}{% endblock %} 
 {% block content %}
 <p></p>
-      <div class="container">
-      <div class="col-md-8">
-        <div class="panel panel-primary">
-          <div class="panel-heading">
-            <h3 class="panel-title">{{ title }}</h3>
-            <div class="pull-right">
-              <form action="{{ url_for('fruits.fruits')}}" method='POST' >
-         <input type=text name="id" value="" maxlength="100">
-    <input type="submit" value="submit" ></form>
-              <span class="clickable filter" data-toggle="tooltip" title="Toggle table filter" data-container="body">
-                <i class="glyphicon glyphicon-filter"></i>
-              </span>
-            </div>
-          </div>
-          <div class="panel-body">
-          </div>
-          <table class="table table-hover" id="dev-table">
-            <thead>
-              <tr>
-                <th>  ID</th>
-                <th>  Name</th>
-                <th>  Delete</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for key, value in values.items() %}
-                  <tr>
-                      <td>{{ key }}</td>
-                      <td >{{ value }}</td>
-                      <td >
-                        <form action="{{ url_for('fruits.fruits_delete')}}" method='POST' >
-                          <input type=hidden name="id" value="{{ key }}" maxlength="100">
-                          <input class="btn btn-xs btn-danger" type="submit" value="DELETE" >
-                        </form>
-                      </td>
-                  </tr>
-                {% endfor %}
-            </tbody>
-          </table>
+<div class="container">
+  <div class="col-md-8">
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h3 class="panel-title">{{ title }}</h3>
+        <div class="pull-right">
+          <form action="{{ url_for('fruits.fruits')}}" method="POST">
+            <input type="text" name="id" value="" maxlength="100" />
+            <input type="submit" value="submit" />
+          </form>
+
+          <span
+            class="clickable filter"
+            data-toggle="tooltip"
+            title="Toggle table filter"
+            data-container="body"
+          >
+            <i class="glyphicon glyphicon-filter"></i>
+          </span>
         </div>
       </div>
+      <div class="panel-body"></div>
+      <table class="table table-hover" id="dev-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for key, value in values.items() %}
+          <tr>
+            <td>{{ key }}</td>
+            <td>{{ value }}</td>
+            <td>
+              <form action="{{ url_for('fruits.fruits_delete')}}" method="POST">
+                <input
+                  type="hidden"
+                  name="id"
+                  value="{{ key }}"
+                  maxlength="100"
+                />
+                <input
+                  class="btn btn-xs btn-danger"
+                  type="submit"
+                  value="DELETE"
+                />
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
 {% endblock %}
