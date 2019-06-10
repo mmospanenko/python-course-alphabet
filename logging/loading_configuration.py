@@ -1,10 +1,14 @@
 import logging
 import logging.config
 import yaml
+import os
+
+DIR = os.path.dirname(os.path.abspath(__file__))
+FILE = os.path.join(DIR, 'config.yaml')
 
 
 def setup_logging():
-    with open('config.yaml', 'r') as f:
+    with open(FILE, 'r') as f:
         config = yaml.safe_load(f.read())
         logging.config.dictConfig(config)
 
