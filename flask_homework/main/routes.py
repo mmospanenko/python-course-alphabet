@@ -5,14 +5,13 @@ from flask import render_template, make_response
 parser = reqparse.RequestParser(bundle_errors=True)
 parser.add_argument('page', type=int, help="wrong page expecting int")
 
-value = []
+author = 'Alex Smith'
 
 
 class Main(Resource):
 
     def get(self):
-        return make_response(render_template('home.html', response=value))
-
-    def post(self, value):
-        # value_list.append(value)
-        return "Successful"
+        return make_response(render_template(
+            'home.html', title='Home', author=author
+            )
+        )

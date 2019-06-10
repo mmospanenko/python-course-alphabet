@@ -21,37 +21,30 @@ values = [
 response = {key: val for key, val in enumerate(values, 1)}
 
 
-class Fruits(Resource):
-
-    def render(self):
-        return make_response(render_template(
-            'fruits/fruits.html',
-            values=response,
-            title='fruits'
-            )
+def render():
+    return make_response(render_template(
+        'fruits/fruits.html',
+        values=response,
+        title='fruits'
         )
+    )
+
+
+class Fruits(Resource):
 
     def get(self):
         parser.parse_args()
-        return self.render()
+        return render()
 
     def post(self):
         if request.form.get('id'):
             max_values = max(response)
             response[max_values + 1] = request.form.get('id')
-            return self.render()
-        return self.render()
+            return render()
+        return render()
 
 
 class FruitsDelete(Resource):
-
-    def render(self):
-        return make_response(render_template(
-            'fruits/fruits.html',
-            values=response,
-            title='fruits'
-            )
-        )
 
     def post(self):
         parser.parse_args()
@@ -60,4 +53,4 @@ class FruitsDelete(Resource):
             if key == ids['id']:
                 del response[ids['id']]
                 break
-        return self.render()
+        return render()
