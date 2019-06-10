@@ -1,0 +1,26 @@
+{% extends "base.html" %} {% block content %}
+
+<main role="main" class="inner cover my-auto text-center">
+  <p class="lead">
+    List of the best of the best eat
+  </p>
+  <p class="lead mt-5">
+    <a href="{{ url_for('fruits.fruits') }}" class="btn btn-lg btn-primary"
+      >Fruits</a
+    >
+    <a
+      href="{{ url_for('vegetables.vegetables')}}"
+      class="btn btn-lg btn-primary"
+      >Vegetable</a
+    >
+    <a href="{{ url_for('redirect_page') }}" class="btn btn-lg btn-primary"
+      >Redirect</a
+    >
+  </p>
+</main>
+<footer class="mastfoot mt-auto text-center">
+  <div class="inner">
+    <p>{{ author }}</p>
+  </div>
+</footer>
+{% endblock %}
