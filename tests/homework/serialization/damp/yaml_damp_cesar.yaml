@@ -1,0 +1,44 @@
+!cesar
+name: Petro
+garages:
+        - !garage
+          town: Amsterdam
+          cars:
+                  - !car
+                    price: 4123.2
+                    type_car: Diesel
+                    producer: Ford
+                    number: d4af1874-1363-4f71-9c37-96adcbf220ff
+                    mileage: 994.8
+                  - !car
+                    price: 35994.0
+                    type_car: Diesel
+                    producer: Chery
+                    number: b58e377d-5354-462c-9893-04d03abda2e5
+                    mileage: 255.6
+                  - &id001 !car
+                    price: 25000.145
+                    type_car: Sedan
+                    producer: Ford
+                    number: 8627b2b7-c1ba-4252-bb1f-2bd807e33ff1
+                    mileage: 1
+          places: 3
+          owner:
+        - !garage
+          town: Prague
+          cars:
+                  - *id001
+                  - !car
+                    price: 35000.145
+                    type_car: Sedan
+                    producer: BMW
+                    number: 1129f4e9-f537-411b-8245-a9ac3d7f9682
+                    mileage: 1
+          places: 2
+          owner:
+        - !garage
+          town: Kiev
+          cars: []
+          places: 5
+          owner:
+register_id: 5ea0b70a-37fa-48c0-9972-3715bafb4e10

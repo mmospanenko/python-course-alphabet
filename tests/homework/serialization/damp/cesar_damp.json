@@ -1,0 +1,61 @@
+{
+    "name": "Petro",
+    "garages": [
+        {
+            "town": "Amsterdam",
+            "cars": [
+                {
+                    "price": 4123.2,
+                    "type_car": "Diesel",
+                    "producer": "Ford",
+                    "number": "d4af187413634f719c3796adcbf220ff",
+                    "mileage": 994.8
+                },
+                {
+                    "price": 35994.0,
+                    "type_car": "Diesel",
+                    "producer": "Chery",
+                    "number": "b58e377d5354462c989304d03abda2e5",
+                    "mileage": 255.6
+                },
+                {
+                    "price": 25000.145,
+                    "type_car": "Sedan",
+                    "producer": "Ford",
+                    "number": "8627b2b7c1ba4252bb1f2bd807e33ff1",
+                    "mileage": 1
+                }
+            ],
+            "places": 3,
+            "owner": null
+        },
+        {
+            "town": "Prague",
+            "cars": [
+                {
+                    "price": 25000.145,
+                    "type_car": "Sedan",
+                    "producer": "Ford",
+                    "number": "8627b2b7c1ba4252bb1f2bd807e33ff1",
+                    "mileage": 1
+                },
+                {
+                    "price": 35000.145,
+                    "type_car": "Sedan",
+                    "producer": "BMW",
+                    "number": "1129f4e9f537411b8245a9ac3d7f9682",
+                    "mileage": 1
+                }
+            ],
+            "places": 2,
+            "owner": null
+        },
+        {
+            "town": "Kiev",
+            "cars": [],
+            "places": 5,
+            "owner": null
+        }
+    ],
+    "register_id": "5ea0b70a37fa48c099723715bafb4e10"
+}

@@ -1,0 +1,18 @@
+        - eg: !car
+              price: 12000.0
+              type_car: Sedan
+              producer: Chevrolet
+              number: 76f40c63-c18f-401a-b503-0037ed31c2b9
+              mileage: 476.4
+        - gt: !car
+              price: 13000.0
+              type_car: Wagon
+              producer: Buick
+              number: 9b65e558-e2b9-4345-bb89-4a695fad747b
+              mileage: 630.0
+        - lt: !car
+              price: 11000.0
+              type_car: Wagon
+              producer: Buick
+              number: 51e1b221-245f-4d36-bbb2-c4e632b396c4
+              mileage: 662.4
