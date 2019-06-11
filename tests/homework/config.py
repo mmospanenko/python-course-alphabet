@@ -18,10 +18,16 @@ def fixture_dir(base_dir):
 
 YAML_CARS_OBJ = YamlConverter().yaml_load('cars', fixture_dir('yaml_fixture'))
 YAML_CARS = YamlConverter().yaml_load('cars_add', fixture_dir('yaml_fixture'))
-YAML_GARAGES = YamlConverter().yaml_load('garages', fixture_dir('yaml_fixture'))
+YAML_GARAGES = YamlConverter().yaml_load(
+    'garages', fixture_dir('yaml_fixture')
+    )
 YAML_GARAGE = YamlConverter().yaml_load('garage', fixture_dir('yaml_fixture'))
 YAML_CESAR = YamlConverter().yaml_load('cesar', fixture_dir('yaml_fixture'))
 
-JSON_CESAR = JsonConverter().json_load('cesar_damp', fixture_dir('json_fixture'))
+JSON_CESAR = JsonConverter().json_load(
+    'cesar_damp', fixture_dir('json_fixture')
+    )
 
-PICKLE_CESAR = PickleConverter().pickle_load('pickle_damp_cesar', fixture_dir('pickle_fixture'))
+PICKLE_CESAR = PickleConverter().pickle_load(
+    'pickle_damp_cesar', fixture_dir('pickle_fixture')
+    )
