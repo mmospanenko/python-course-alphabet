@@ -206,8 +206,8 @@ class Garage:
         assert self.town, f'Select towns from list {TOWNS}'
 
     def __repr__(self):
-        return f'Garage: Town {self.town}, Cars {self.cars},' \
-            f'Places {self.places}, Owner {self.owner}'
+        return f'Garage: Town {self.town}, Cars {self.cars}, ' \
+            f'Places {self.places}, Owner {self.owner} --end garage'
 
     def add(self, car):
         car_in_garage = list(

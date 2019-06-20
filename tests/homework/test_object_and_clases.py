@@ -34,20 +34,27 @@ class Base(unittest.TestCase):
         self.cesar_json = JSON_CESAR
         self.cesar_pickle = PICKLE_CESAR
         self.garage = Garage(town='Amsterdam', places=3)
+        self.cesar = Cesar('Denchick', [self.garage])
 
 
 class TestCar(Base):
 
-    def test_matching_cars(self):
+    def test_eq_car(self):
         for car in YAML_CARS_OBJ:
             if car.get('eg'):
                 self.assertEqual(car['eg'], self.car)
+
+    def test_gt_car(self):
+        self.car.price = 13000.0
+        for car in YAML_CARS_OBJ:
             if car.get('gt'):
-                self.assertGreater(car['gt'], self.car)
-                self.assertGreaterEqual(car['gt'], self.car)
+                self.assertEqual(car['gt'], self.car)
+
+    def test_lt_car(self):
+        self.car.price = 11000.0
+        for car in YAML_CARS_OBJ:
             if car.get('lt'):
-                self.assertLess(car['lt'], self.car)
-                self.assertLessEqual(car['lt'], self.car)
+                self.assertEqual(car['lt'], self.car)
 
     def test_new_number(self):
         self.assertNotEqual(self.car.number, self.car.new_number)
@@ -67,9 +74,8 @@ class TestGarage(Base):
         for car in YAML_CARS:
             self.garage.add(car)
 
-        for index in range(len(self.garage.cars)):
-            self.assertEqual(
-                self.garage.cars[index].number, YAML_CARS[index].number)
+        for index, car in enumerate(self.garage.cars):
+            self.assertEqual(car.number, YAML_CARS[index].number)
 
     def test_validation_add_cars(self):
         for car in YAML_CARS:
@@ -95,7 +101,7 @@ class TestCesar(Base):
 
     def add_car(self):
         for car in YAML_CARS:
-            self.cesar_yaml.add_car(car)
+            self.garage.add(car)
         return self.garage
 
     def test_add_car(self):
@@ -106,36 +112,44 @@ class TestCesar(Base):
             self.car.number, self.cesar_yaml.garages[2].cars[0].number)
 
     def test_hit_hat(self):
-        self.cesar_yaml.add_car(self.car)
         self.add_car()
-        self.assertEqual(self.cesar_yaml.hit_hat(), 240482.945)
+        self.assertEqual(self.cesar.hit_hat(), 216482.94499999998)
+
+    def test_yaml_hit_hat(self):
+        self.cesar_yaml.add_car(self.car)
+        self.assertEqual(self.cesar_yaml.hit_hat(), 136804.8)
 
     def test_garages_count(self):
         assert len(self.cesar_yaml.garages) == self.cesar_yaml.garages_count()
 
-    def test_cars_count(self):
-        yaml_cars_count = [len(car.cars) for car in self.cesar_yaml.garages]
-        assert sum(yaml_cars_count) == self.cesar_yaml.cars_count()
+    def test_cars_count_from_yaml(self):
+        cars_count = [len(car.cars) for car in self.cesar_yaml.garages]
+        assert sum(cars_count) == self.cesar_yaml.cars_count()
 
-        json_cars_count = [len(car.cars) for car in self.cesar_json.garages]
-        assert sum(json_cars_count) == self.cesar_json.cars_count()
+    def test_cars_count_from_json(self):
+        cars_count = [len(car.cars) for car in self.cesar_json.garages]
+        assert sum(cars_count) == self.cesar_json.cars_count()
 
-        pickle_cars_count = [len(car.cars) for car in self.cesar_pickle.garages]
-        assert sum(pickle_cars_count) == self.cesar_pickle.cars_count()
+    def test_cars_count_from_pickle(self):
+        cars_count = [len(car.cars) for car in self.cesar_pickle.garages]
+        assert sum(cars_count) == self.cesar_pickle.cars_count()
 
     def test_validation_add_cars(self):
-        self.cesar_yaml.add_car(self.car, garage=self.cesar_yaml.garages[0])
-        m = 'Sorry garage count is full (places=3, count=3)'
+        self.cesar_yaml.add_car(self.car, garage=self.cesar_yaml.garages[1])
+        self.cesar_yaml.add_car(
+            YAML_CARS[0], garage=self.cesar_yaml.garages[1]
+        )
+        message = 'Sorry garage count is full (places=2, count=2)'
         assert self.cesar_yaml.add_car(
-            YAML_CARS[0], garage=self.cesar_yaml.garages[0]) == m
+            YAML_CARS[1], garage=self.cesar_yaml.garages[1]) == message
 
-    def test_gt_cesar(self):
+    def test_gt_cesar_from_yaml(self):
         new_cesar = Cesar('Anton', YAML_GARAGE)
         new_cesar.add_car(self.car)
         new_cesar.add_car(YAML_CARS[0])
-        assert new_cesar.hit_hat() > self.cesar_yaml.hit_hat()
+        assert new_cesar > self.cesar_yaml
 
-    def test_json_cesar(self):
+    def test_json_eq_cesar(self):
         print(self.cesar_json.hit_hat())
 
 
