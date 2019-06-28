@@ -1,0 +1,44 @@
+!cesar
+name: Petro
+garages:
+        - !garage
+          town: Amsterdam
+          cars:
+                  - !car
+                    price: 6709.2
+                    type_car: Truck
+                    producer: Chevrolet
+                    number: 48f59b5f-4da3-4977-babb-a32e8612cc97
+                    mileage: 789.6
+                  - !car
+                    price: 35031.6
+                    type_car: Crossover
+                    producer: Ford
+                    number: 28c3b1b1-98d4-4824-b307-92acd063637d
+                    mileage: 906.0
+                  - &id001 !car
+                    price: 25000.145
+                    type_car: Sedan
+                    producer: Ford
+                    number: f4e230ae-f4f9-48df-8ead-7593d5b8947a
+                    mileage: 1
+          places: 3
+          owner:
+        - !garage
+          town: Prague
+          cars:
+                  - *id001
+                  - !car
+                    price: 35000.145
+                    type_car: Sedan
+                    producer: BMW
+                    number: b0ebdc18-0e49-4479-9ca9-346105fb88a9
+                    mileage: 1
+          places: 2
+          owner:
+        - !garage
+          town: Kiev
+          cars: []
+          places: 5
+          owner:
+register_id: 659361fc-7997-4cdd-9591-c8f33593d2cd
