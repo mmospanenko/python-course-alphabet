@@ -1,0 +1,5 @@
+        - !garage
+          town: Amsterdam
+          cars: &id001 []
+          places: 3
+          owner:

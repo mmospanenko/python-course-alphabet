@@ -1,0 +1,61 @@
+{
+    "name": "Petro",
+    "garages": [
+        {
+            "town": "Amsterdam",
+            "cars": [
+                {
+                    "price": 1460.3999999999999,
+                    "type_car": "Van",
+                    "producer": "Buick",
+                    "number": "7b8d8eb8f6184defa2e06c801330a9a7",
+                    "mileage": 742.8
+                },
+                {
+                    "price": 48212.4,
+                    "type_car": "Coupe",
+                    "producer": "Lamborghini",
+                    "number": "ce6b2d01d9d04e24bcded5e82ea2dac1",
+                    "mileage": 946.8
+                },
+                {
+                    "price": 25000.145,
+                    "type_car": "Sedan",
+                    "producer": "Ford",
+                    "number": "5032af340984461a88071076174b7ff0",
+                    "mileage": 1
+                }
+            ],
+            "places": 3,
+            "owner": null
+        },
+        {
+            "town": "Prague",
+            "cars": [
+                {
+                    "price": 25000.145,
+                    "type_car": "Sedan",
+                    "producer": "Ford",
+                    "number": "5032af340984461a88071076174b7ff0",
+                    "mileage": 1
+                },
+                {
+                    "price": 35000.145,
+                    "type_car": "Sedan",
+                    "producer": "BMW",
+                    "number": "8a672f89d8704469a9113942e0a215f1",
+                    "mileage": 1
+                }
+            ],
+            "places": 2,
+            "owner": null
+        },
+        {
+            "town": "Kiev",
+            "cars": [],
+            "places": 5,
+            "owner": null
+        }
+    ],
+    "register_id": "ddea361c555149de8da05162cd038661"
+}
