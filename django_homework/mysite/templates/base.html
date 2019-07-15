@@ -2,11 +2,10 @@
     {% load static %}
 <html lang="en">
 <head>
-      <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}"/>
-      <script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
-      <script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
+    <script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
+    <script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
     {% block head %}
-    <title>{% block title %}{% endblock %} - My Webpage</title>
+        <title>{% block title %}{% endblock %} - My Webpage</title>
     {% endblock %}
     <link
       rel="stylesheet"
@@ -14,6 +13,7 @@
       integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
       crossorigin="anonymous"
     />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}"/>
 </head>
 <body>
     <div id="content">
