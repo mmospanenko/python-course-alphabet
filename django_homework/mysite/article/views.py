@@ -38,7 +38,7 @@ class CommentCreate(CreateView):
     def post(self, request, *args, **kwargs):
         form = CommentsForm(request.POST)
         if form.is_valid():
-            comment = form.save()
+            comment = form.save(commit=False)
             if self.request.user.is_authenticated:
                 author = self.request.POST.get('author')
                 comment.author_id = int(author)
