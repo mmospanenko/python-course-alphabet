@@ -1,16 +1,19 @@
+
 from django.urls import reverse
+from django.shortcuts import redirect
 from django.utils import timezone
+from django.http import HttpResponseBadRequest
 from django.views.generic import (
     ListView,
     CreateView,
     DetailView,
     UpdateView,
-    DeleteView
+    DeleteView,
 )
 
-from article.models import Article
+from article.models import Article, Comments
 from article.mixins import FormMessageMixin
-from article.forms import ArticleForm
+from article.forms import ArticleForm, CommentsForm
 
 
 class IndexView(ListView):
@@ -27,16 +30,29 @@ class IndexView(ListView):
         return context
 
 
+class CommentCreate(CreateView):
+    model = Comments
+    template_name = 'comment/comment_create.html'
+    form_class = CommentsForm
+
+    def post(self, request, *args, **kwargs):
+        form = CommentsForm(request.POST)
+        if form.is_valid():
+            comment = form.save()
+            if self.request.user.is_authenticated:
+                author = self.request.POST.get('author')
+                comment.author_id = int(author)
+            comment.article_id = int(self.request.POST.get('article'))
+            comment.save()
+            return redirect('detail', form.instance.article_id)
+        return HttpResponseBadRequest()
+
+
 class ArticleCreateView(FormMessageMixin, CreateView):
     model = Article
     template_name = 'article/create.html'
     form_class = ArticleForm
     form_valid_message = 'Article created success'
-
-    # def form_valid(self, form):
-    #     profile = Profile.objects.get(user=self.request.user)
-    #     form.instance.author = profile
-    #     return super(ArticleCreateView, self).form_valid(form)
 
     def get_success_url(self):
         return reverse('detail', args=(self.object.id,))
@@ -50,6 +66,8 @@ class ArticleDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['date'] = timezone.now()
+        context['commentform'] = CommentsForm
+        context['comments'] = Comments.objects.all()
         for field in context['article']._meta.get_fields():
             if field.name == 'title':
                 context['title_name'] = field.name

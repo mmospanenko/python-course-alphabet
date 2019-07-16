@@ -1,0 +1,10 @@
+<div>
+    <hr>
+    <h1>Comment list</h1>
+    {% for comment in comments %}
+        {{ comment.comment | safe }}
+        {{ comment.date }}
+        {{ comment.author }}
+    <hr />
+{% endfor %}
+</div>

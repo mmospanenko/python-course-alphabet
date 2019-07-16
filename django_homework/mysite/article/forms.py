@@ -1,9 +1,8 @@
 from django import forms
-from article.models import Article
+from article.models import Article, Comments
 
 
 class ArticleForm(forms.ModelForm):
-    # title = forms.CharField(max_length=5)
 
     class Meta:
         model = Article
@@ -11,3 +10,10 @@ class ArticleForm(forms.ModelForm):
         labels = {
             'title': 'Custom Title',
         }
+
+
+class CommentsForm(forms.ModelForm):
+
+    class Meta:
+        model = Comments
+        fields = ('comment', )

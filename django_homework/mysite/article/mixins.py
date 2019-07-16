@@ -7,8 +7,11 @@ class FormMessageMixin(object):
     form_invalid_message = 'Please correct the errors below.'
 
     def form_valid(self, form):
-        profile = Profile.objects.get(user=self.request.user)
-        form.instance.author = profile
+        if self.request.user.is_authenticated:
+            profile = Profile.objects
+            if profile.filter(user=self.request.user):
+                get_profile = profile.get(user=self.request.user)
+                form.instance.author = get_profile
         messages.success(self.request, self.form_valid_message)
         return super(FormMessageMixin, self).form_valid(form)
 

@@ -23,7 +23,8 @@ from article.views import (
     ArticleCreateView,
     ArticleDetailView,
     ArticleUpdateView,
-    ArticleDeleteView
+    ArticleDeleteView,
+    CommentCreate,
 )
 
 urlpatterns = [
@@ -45,6 +46,12 @@ urlpatterns = [
         'article/delete/<int:article_id>',
         ArticleDeleteView.as_view(),
         name='delete'
+    ),
+    # Comment
+    path(
+        'comment/',
+        CommentCreate.as_view(),
+        name='comment'
     ),
     # Account profile
     path(
