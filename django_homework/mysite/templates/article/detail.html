@@ -29,7 +29,6 @@
 <br>
 <a href="{% url 'update' article.id %}" class="btn btn-primary">Update</a>
 <a href="{% url 'delete' article.id %}" class="btn btn-danger">Delete</a>
-{% include "comment/list.html" %}
-
 {% include "comment/comment_create.html" %}
+{% include "comment/list.html" %}
 {% endblock %}

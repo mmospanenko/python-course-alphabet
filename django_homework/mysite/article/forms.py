@@ -17,3 +17,6 @@ class CommentsForm(forms.ModelForm):
     class Meta:
         model = Comments
         fields = ('comment', )
+        labels = {
+            'comment': 'Add comment to article '
+        }
