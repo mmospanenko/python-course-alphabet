@@ -3,6 +3,7 @@ from django.urls import reverse
 from django.shortcuts import redirect
 from django.utils import timezone
 from django.http import HttpResponseBadRequest
+
 from django.views.generic import (
     ListView,
     CreateView,
@@ -30,22 +31,53 @@ class IndexView(ListView):
         return context
 
 
-class CommentCreate(CreateView):
-    model = Comments
+class CommentArticleCreate(CreateView):
+    # model = Comments
     template_name = 'comment/comment_create.html'
     form_class = CommentsForm
 
+    def form_valid(self, form):
+        import ipdb; ipdb.set_trace()
+
+
+    # def post(self, request, *args, **kwargs):
+    #     form = CommentsForm(request.POST)
+    #     if form.is_valid():
+    #         comment = form.save(commit=False)
+    #         if self.request.user.is_authenticated:
+    #             author = self.request.POST.get('author')
+    #             comment.author_id = int(author)
+    #         comment.article_id = int(self.request.POST.get('article'))
+    #         comment.save()
+    #         return redirect('detail', form.instance.article_id)
+    #     return HttpResponseBadRequest()
+
+
+class CommentAddToComment(CreateView):
+    model = Comments
+    template_name = 'comment/comment_to_comment.html'
+    form_class = CommentsForm
+    context_object_name = 'comment'
+    pk_url_kwarg = 'comment_id'
+
     def post(self, request, *args, **kwargs):
         form = CommentsForm(request.POST)
+        import ipdb; ipdb.set_trace()
         if form.is_valid():
             comment = form.save(commit=False)
             if self.request.user.is_authenticated:
-                author = self.request.POST.get('author')
-                comment.author_id = int(author)
-            comment.article_id = int(self.request.POST.get('article'))
+                comment.author_id = self.request.user.id
+            comment.parent_id = int(self.request.POST.get('comment_id'))
             comment.save()
-            return redirect('detail', form.instance.article_id)
+            return redirect('detail', form.instance.parent.article_id)
         return HttpResponseBadRequest()
+
+    def get_context_data(self, **kwargs):
+        parent_comment = self.get_object()
+        context = super().get_context_data(**kwargs)
+        context['id'] = parent_comment.id
+        context['reply_comment'] = parent_comment
+        return context
 
 
 class ArticleCreateView(FormMessageMixin, CreateView):

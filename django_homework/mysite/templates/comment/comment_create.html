@@ -1,8 +1,8 @@
 
 <form action="{% url 'comment' %}" method="post">
     {% csrf_token %}
-    {{ commentform.as_p }}
-    <input type="hidden" name="article" value="{{ article.id }}">
-    <input type="hidden" name="author" value="{{ user.id }}">
+    {{ form.as_p }}
+    <input type="hidden" name="object_id" value="{{ article.id }}">
+    <input type="hidden" name="model_name" value="article">
     <button type="submit" class="btn btn-success">Press</button>
 </form>

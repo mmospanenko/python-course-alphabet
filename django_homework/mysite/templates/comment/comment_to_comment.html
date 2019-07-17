@@ -1,0 +1,9 @@
+{% extends "base.html" %} 
+{% block content %}
+<form action="{% url 'comment_add' reply_comment.id %}" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="hidden" name="comment_id" value="{{ reply_comment.id }}">
+    <button type="submit" class="btn btn-success">Press</button>
+</form>
+{% endblock %}

@@ -1,10 +1,24 @@
-<div>
-    <hr id="line">
-    <h1>Comment list</h1>
-    {% for comment in comments %}
-        {{ comment.comment | safe }}
-        {{ comment.date }}
-        {{ comment.author }}
-    <hr />
-{% endfor %}
+<div class="container">
+  <dir class="row">
+    <div class="col-xs-12">
+      <h1>Comment list</h1>
+      <div class="col-xs-8">
+        {% for comment in comments %}
+          <div class="comment">
+            {{ comment.comment | safe }}
+            {{ comment.date }}
+            {{ comment.author | linebreaks}}
+                {% for replie in comment.replies.all %}
+                        {{ replie.comment | safe }}
+                        {{ replie.date }}
+                        {{ replie.author }}
+                {% endfor %}
+          </div>
+        <hr>
+        <a href="{% url 'comment_add' comment.id %}" class="btn btn-success">Reply</a>
+        {% endfor %}
+        <h4>There are no comments yet.</h4>
+      </div>
+    </div>
+  </dir>
 </div>

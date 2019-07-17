@@ -24,7 +24,8 @@ from article.views import (
     ArticleDetailView,
     ArticleUpdateView,
     ArticleDeleteView,
-    CommentCreate,
+    CommentArticleCreate,
+    CommentAddToComment
 )
 
 urlpatterns = [
@@ -50,8 +51,13 @@ urlpatterns = [
     # Comment
     path(
         'comment/',
-        CommentCreate.as_view(),
+        CommentArticleCreate.as_view(),
         name='comment'
+    ),
+    path(
+        'comment/<int:comment_id>',
+        CommentAddToComment.as_view(),
+        name='comment_add'
     ),
     # Account profile
     path(
