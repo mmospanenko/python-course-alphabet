@@ -14,12 +14,5 @@ class ArticleForm(forms.ModelForm):
 
 class CommentsForm(forms.Form):
     comment = forms.CharField(widget=forms.Textarea)
-    # object_id = forms.CharField()
-    # model_name = forms.CharField()
-
-    # class Meta:
-    #     model = Comments
-    #     fields = ('comment', )
-    #     labels = {
-    #         'comment': 'Add comment to article '
-    #     }
+    object_id = forms.CharField(widget=forms.HiddenInput())
+    model_name = forms.CharField(widget=forms.HiddenInput())

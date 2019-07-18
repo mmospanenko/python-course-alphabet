@@ -30,8 +30,10 @@
     <a href="{% url 'update' article.id %}" class="btn btn-primary">Update</a>
     <a href="{% url 'delete' article.id %}" class="btn btn-danger">Delete</a>
     <hr id="line">
-    {% include "comment/comment_create.html" %}
+        {% include "comment/form.html" with object_id=article.id model_name='article.Article' %}
     <hr id="line">
 </div>
-    {% include "comment/list.html" %}
+{% for comment in article.comments.all %}
+    {% include "comment/details.html" with comment=comment %}
+{% endfor %}
 {% endblock %}

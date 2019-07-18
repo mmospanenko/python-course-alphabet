@@ -19,6 +19,7 @@ from django.conf import settings
 from django.urls import path, include
 from account.views import ProfileDetailView, StartView, SignUp
 from article.views import (
+    add_comment,
     IndexView,
     ArticleCreateView,
     ArticleDetailView,
@@ -53,6 +54,11 @@ urlpatterns = [
         'comment/',
         CommentArticleCreate.as_view(),
         name='comment'
+    ),
+    path(
+        'add-comment/',
+        add_comment,
+        name='add-comment'
     ),
     path(
         'comment/<int:comment_id>',

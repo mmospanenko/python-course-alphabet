@@ -2,8 +2,8 @@
 from django.urls import reverse
 from django.shortcuts import redirect
 from django.utils import timezone
-from django.http import HttpResponseBadRequest
-
+from django.http import HttpResponseBadRequest, HttpResponseRedirect
+from django.contrib.contenttypes.models import ContentType
 from django.views.generic import (
     ListView,
     CreateView,
@@ -15,6 +15,24 @@ from django.views.generic import (
 from article.models import Article, Comments
 from article.mixins import FormMessageMixin
 from article.forms import ArticleForm, CommentsForm
+
+
+def add_comment(request):
+    if request.method == 'POST':
+        form = CommentsForm(request.POST)
+        if form.is_valid():
+            app_label, model = form.cleaned_data['model_name'].lower().split('.')
+            Comments.objects.create(
+                author=getattr(request.user, 'profile', None),
+                content_type=ContentType.objects.get(app_label=app_label, model=model),
+                object_id=int(form.cleaned_data['object_id']),
+                comment=form.cleaned_data['comment'],
+            )
+        else:
+            # todo: error handling
+            pass
+
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 class IndexView(ListView):
@@ -37,8 +55,8 @@ class CommentArticleCreate(CreateView):
     form_class = CommentsForm
 
     def form_valid(self, form):
-        import ipdb; ipdb.set_trace()
-
+        import ipdb
+        ipdb.set_trace()
 
     # def post(self, request, *args, **kwargs):
     #     form = CommentsForm(request.POST)
@@ -62,7 +80,6 @@ class CommentAddToComment(CreateView):
 
     def post(self, request, *args, **kwargs):
         form = CommentsForm(request.POST)
-        import ipdb; ipdb.set_trace()
         if form.is_valid():
             comment = form.save(commit=False)
             if self.request.user.is_authenticated:
@@ -95,7 +112,7 @@ class ArticleDetailView(DetailView):
     template_name = 'article/detail.html'
     pk_url_kwarg = 'article_id'
 
-    def get_context_data(self, **kwargs):
+    def _get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['date'] = timezone.now()
         context['commentform'] = CommentsForm
